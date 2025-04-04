@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      {{ title || 'Makira' }}
+    </title>
+
+    <!-- CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    />
+    <link rel="stylesheet" href="https://unpkg.com/feather-icons" />
+
+    <!-- Vite ou CSS normal -->
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+  </head>
+
+  <body>
+    <div class="page-wraper">
+      @include('partials/header')
+
+      <div class="page-content">
+        @yield('content')
+      </div>
+
+      @include('partials/footer')
+      @include('components/common/signupopup')
+      @include('components/common/loginpopup')
+    </div>
+
+    <!-- Scripts JS -->
+    <script src="{{ asset('js/jquery-3.6.0.min.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/popper.min.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/bootstrap.min.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/magnific-popup.min.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/waypoints.min.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/counterup.min.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/waypoints-sticky.min.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/isotope.pkgd.min.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/imagesloaded.pkgd.min.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/owl.carousel.min.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/theia-sticky-sidebar.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/lc_lightbox.lite.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/bootstrap-select.min.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/dropzone.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/jquery.scrollbar.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/bootstrap-datepicker.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/jquery.dataTables.min.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/dataTables.bootstrap5.min.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/chart.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/anm.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/bootstrap-slider.min.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/swiper-bundle.min.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/custom.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/switcher.js') }}">
+      
+    </script>
+
+    <!-- Scripts dynamiques -->
+    @stack('scripts')
+  </body>
+</html>

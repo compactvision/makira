@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      {{ title || 'Accueil - Makira' }}
+    </title>
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+  </head>
+  <body>
+    <div class="page-wraper">
+
+      <div class="page-content">
+        <div class="section-full site-bg-white">
+
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-xl-8 col-lg-6 col-md-5 twm-log-reg-media-wrap">
+                <div class="twm-log-reg-media">
+                  <div class="twm-l-media">
+                    <img src="images/login-bg.png" alt="" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-xl-4 col-lg-6 col-md-7">
+                <div class="twm-log-reg-form-wrap">
+                  <div class="twm-log-reg-logo-head">
+                    <a href="index.html">
+                      <img src="images/logo-dark.png" alt="" class="logo" />
+                    </a>
+                  </div>
+
+                  <div class="twm-log-reg-inner">
+                    <div class="twm-log-reg-head">
+                      <div class="twm-log-reg-logo">
+                        <span class="log-reg-form-title">S'inscrire</span>
+                      </div>
+                    </div>
+                    <div class="twm-tabs-style-2">
+
+                      <ul class="nav nav-tabs" id="myTab2" role="tablist">
+
+                        <!--Login Candidate-->
+                        {{--  <li class="nav-item">
+                          <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#twm-login-candidate" type="button">                            <i class="fas fa-user-tie"></i>Candidate</button>
+                        </li>
+                        --}}
+
+                      </ul>
+
+                      <div class="tab-content" id="myTab2Content">
+                        <!--Login Candidate Content-->
+                        <form
+                          class="tab-pane fade show active"
+                          id="twm-login-candidate"
+                          action="{{ route('register') }}"
+                          method="POST"
+                        >
+                          {{ csrfField() }}
+                          <div class="row">
+
+                            <div class="col-lg-12">
+                              <div class="form-group mb-3">
+                                <input name="name" type="text" required="" class="form-control" placeholder="Nom*" />
+                              </div>
+                            </div>
+
+                            <div class="col-lg-12">
+                              <div class="form-group mb-3">
+                                <input name="email" type="email" class="form-control" required="" placeholder="Email*" />
+                              </div>
+                            </div>
+
+                            <div class="col-lg-12">
+                                <div class="form-group mb-3">
+                                  <input name="password" type="password" class="form-control" required="" placeholder="Mot de passe*" />
+                                </div>
+                              </div>
+
+
+                            <div class="col-lg-12">
+                                <div class="twm-forgot-wrap">
+                                  <div class="form-group mb-3">
+                                    <div class="form-check">
+                                      <label class="form-check-label rem-forgot" for="Password4">J'ai un compte ! <a href="{{ route('loginShow') }}" class="site-text-primary">Se connecter</a></label>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                            <div class="col-md-12">
+                              <div class="form-group">
+                                <button type="submit" class="site-button">Se connecter</button>
+                              </div>
+                            </div>
+
+                            {{--  <div class="col-md-12">
+                              <div class="form-group">
+                                <span class="center-text-or">Or</span>
+                              </div>
+                            </div>
+                            
+                            <div class="col-md-12">
+                              <div class="form-group">
+                                <button type="submit" class="log_with_facebook">
+                                  <i class="fab fa-facebook"></i>
+                                  Continue with Facebook
+                                                        </button>
+                              </div>
+                            </div>  --}}
+
+                            {{--  <div class="col-md-12">
+                              <div class="form-group">
+                                <button type="submit" class="log_with_google">
+                                  <img src="images/google-icon.png" alt="" />
+                                  Continue with Google
+                                                        </button>
+                              </div>
+                            </div>  --}}
+
+                          </div>
+                        </form>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    {{-- Scripts JS --}}
+    <script src="{{ asset('js/jquery-3.6.0.min.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/popper.min.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/bootstrap.min.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/magnific-popup.min.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/waypoints.min.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/counterup.min.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/waypoints-sticky.min.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/isotope.pkgd.min.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/imagesloaded.pkgd.min.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/owl.carousel.min.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/theia-sticky-sidebar.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/lc_lightbox.lite.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/bootstrap-select.min.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/dropzone.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/jquery.scrollbar.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/bootstrap-datepicker.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/jquery.dataTables.min.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/dataTables.bootstrap5.min.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/chart.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/anm.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/bootstrap-slider.min.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/swiper-bundle.min.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/custom.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/switcher.js') }}">
+      
+    </script>
+  </body>
+</html>

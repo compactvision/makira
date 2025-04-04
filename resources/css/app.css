@@ -1,0 +1,34 @@
+@import url('./bootstrap.min.css');
+@import url('./font-awesome.min.css');
+@import url('./feather.css');
+@import url('./owl.carousel.min.css');
+@import url('./magnific-popup.min.css');
+@import url('./lc_lightbox.css');
+@import url('./bootstrap-select.min.css');
+@import url('./dataTables.bootstrap5.min.css');
+@import url('./select.bootstrap5.min.css');
+@import url('./dropzone.css');
+@import url('./scrollbar.css');
+@import url('./datepicker.css');
+@import url('./flaticon.css');
+@import url('./swiper-bundle.min.css');
+@import url('./style.css');
+
+
+@import url('./switcher.css');
+
+
+.notification {
+  padding: 1rem 1.5rem;
+  border-radius: 0.5rem;
+  color: white;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.notification-success {
+  background-color: #10B981; /* Vert */
+}
+
+.notification-error {
+  background-color: #EF4444; /* Rouge */
+}

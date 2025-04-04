@@ -1,0 +1,100 @@
+<header class="site-header header-style-3 mobile-sider-drawer-menu">
+
+  <div class="sticky-header main-bar-wraper  navbar-expand-lg">
+    <div class="main-bar">
+
+      <div class="container-fluid clearfix">
+
+        <div class="logo-header">
+          <div class="logo-header-inner logo-header-one">
+            <a href="#">
+              <h2>
+                Makira
+              </h2>
+              {{--  <img src="images/logo-10.png" alt="" />  --}}
+            </a>
+          </div>
+        </div>
+
+        <!-- NAV Toggle Button -->
+        <button
+          id="mobile-side-drawer"
+          data-target=".header-nav"
+          data-toggle="collapse"
+          type="button"
+          class="navbar-toggler collapsed"
+        >
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar icon-bar-first"></span>
+          <span class="icon-bar icon-bar-two"></span>
+          <span class="icon-bar icon-bar-three"></span>
+        </button>
+
+        <!-- MAIN Vav -->
+        <div class="nav-animation header-nav navbar-collapse collapse d-flex justify-content-center">
+
+          <ul class=" nav navbar-nav">
+            <li class="has-mega-menu">
+              <a href="{{ route('home') }}">Accueil</a>
+
+            </li>
+
+            <li class="has-child">
+              <a href="{{ route('candidat') }}">Candidats</a>
+
+            </li>
+            <li class="has-child">
+              <a href="{{ route('about') }}">À propos</a>
+
+            </li>
+            <li class="has-child">
+              <a href="{{ route('contact') }}">Contact</a>
+
+            </li>
+          </ul>
+
+        </div>
+
+        <!-- Header Right Section-->
+        <div class="extra-nav header-2-nav">
+          <div class="extra-cell">
+            <div class="header-search">
+              <a href="#search" class="header-search-icon">                <i class="feather-search"></i></a>
+            </div>
+          </div>
+          <div class="extra-cell">
+            <div class="header-nav-btn-section">
+              <div class="twm-nav-btn-left">
+                @if(auth.user)
+                  <a class="twm-nav-sign-up" href="{{ route('profile') }}">
+                    <i class="feather-log-in"></i>{{ auth.user.name }}
+                                  </a>
+                @else
+                  <a class="twm-nav-sign-up" data-bs-toggle="modal" href="#sign_up_popup" role="button">
+                    <i class="feather-log-in"></i>S'inscrire
+                                </a>
+                @endif
+              </div>
+              @if(auth.user.role === 'admin')
+                <div class="twm-nav-btn-right">
+                  <a href="{{ route('dashboard') }}" class="twm-nav-post-a-job">
+                    <i class="feather-briefcase"></i>Dashboard
+                                  </a>
+                </div>
+              @else
+                <div class="twm-nav-btn-right">
+                  <a href="#" class="twm-nav-post-a-job">
+                    <i class="feather-briefcase"></i>Envoyer CV
+                                </a>
+                </div>
+              @endif
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</header>

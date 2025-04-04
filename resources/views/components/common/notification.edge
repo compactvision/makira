@@ -1,0 +1,27 @@
+@if(flashMessages.has('notification'))
+  @set('notif', flashMessages.get('notification'))
+  
+  @if(notif)
+    <div class="notification notification-{{ notif.type ?? 'info' }}" 
+         style="position: fixed; top: 20px; right: 20px; z-index: 1000;
+                padding: 1rem; background: #10B981; color: white; border-radius: 0.5rem;
+                animation: fadeInOut {{ notif.duration ?? 2000 }}ms;">
+      {{ notif.message ?? notif }}
+    </div>
+
+    <style>
+      @keyframes fadeInOut {
+        0% { opacity: 0; transform: translateY(-20px); }
+        10% { opacity: 1; transform: translateY(0); }
+        90% { opacity: 1; transform: translateY(0); }
+        100% { opacity: 0; transform: translateY(-20px); }
+      }
+    </style>
+
+    <script>
+      setTimeout(() => {
+        document.querySelector('.notification')?.remove()
+      }, {{ notif.duration ?? 2000 }})
+    </script>
+  @endif
+@endif
