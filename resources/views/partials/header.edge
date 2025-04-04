@@ -40,10 +40,6 @@
             </li>
 
             <li class="has-child">
-              <a href="{{ route('candidat') }}">Candidats</a>
-
-            </li>
-            <li class="has-child">
               <a href="{{ route('about') }}">À propos</a>
 
             </li>
@@ -58,24 +54,24 @@
         <!-- Header Right Section-->
         <div class="extra-nav header-2-nav">
           <div class="extra-cell">
-            <div class="header-search">
-              <a href="#search" class="header-search-icon">                <i class="feather-search"></i></a>
-            </div>
-          </div>
-          <div class="extra-cell">
             <div class="header-nav-btn-section">
               <div class="twm-nav-btn-left">
                 @if(auth.user)
-                  <a class="twm-nav-sign-up" href="{{ route('profile') }}">
-                    <i class="feather-log-in"></i>{{ auth.user.name }}
-                                  </a>
+                  @if(auth.user.role === 'admin')
+
+                  @else
+                    <a class="twm-nav-sign-up" href="{{ route('profile') }}">
+                      <i class="feather-log-in"></i>{{ auth.user.name }}
+                                    </a>
+
+                  @endif
                 @else
                   <a class="twm-nav-sign-up" data-bs-toggle="modal" href="#sign_up_popup" role="button">
                     <i class="feather-log-in"></i>S'inscrire
                                 </a>
                 @endif
               </div>
-              @if(auth.user.role === 'admin')
+              @if(auth.user && auth.user.role === 'admin')
                 <div class="twm-nav-btn-right">
                   <a href="{{ route('dashboard') }}" class="twm-nav-post-a-job">
                     <i class="feather-briefcase"></i>Dashboard

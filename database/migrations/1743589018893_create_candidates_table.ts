@@ -18,6 +18,7 @@ export default class extends BaseSchema {
       table.string('nom', 80).notNullable()
       table.string('prenom', 80).notNullable()
       table.string('phone', 20).notNullable()
+      table.string('poste').notNullable()
       table.text('address').notNullable()
       table.string('photo_url', 255).nullable()
       table.text('about').nullable()

@@ -1,115 +1,16 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ title || 'Accueil - Makira' }}</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.2/feather.min.js" integrity="sha512-zMm7+ZQ8AZr1r3W8Z8lDATkH05QG5Gm2xc6MlsCdBz9l6oE8Y7IXByMgSm/rdRQrhuHt99HAYfMljBOEZ68q5A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+@component('layouts/main')
+  @slot('title')
+    <title>
+      Makira - Accueil
+    </title>
+  @endslot
+  
+  @slot('main')
+    @!component('components/common/notification')
+    {{-- Section Hero --}}
+    @include('components/section/hero')
 
-  @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body>
-  <div class="page-wraper">
-    @include('partials/header')
-
-    <div class="page-content">
-      @!component('components/common/notification')
-      {{-- Section Hero --}}
-      @include('components/section/hero')
-
-      {{-- Section Work --}}
-      @include('components/section/work')
-
-      {{-- Exemple d'une section personnalisée --}}
-      <div class="section-full p-t120 p-b90 site-bg-white">
-        <div class="container">
-          <div class="section-head center wt-small-separator-outer">
-            <h2>Bienvenue sur Makira</h2>
-            <p>Voici un exemple de section personnalisée</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    @include('partials/footer')
-    @include('components/common/signupopup')
-    @include('components/common/loginpopup')
-  </div>
-
-  {{-- Scripts JS --}}
-  <script src="{{ asset('js/jquery-3.6.0.min.js') }}">
-      
-  </script>
-  <script src="{{ asset('js/popper.min.js') }}">
-    
-  </script>
-  <script src="{{ asset('js/bootstrap.min.js') }}">
-    
-  </script>
-  <script src="{{ asset('js/magnific-popup.min.js') }}">
-    
-  </script>
-  <script src="{{ asset('js/waypoints.min.js') }}">
-    
-  </script>
-  <script src="{{ asset('js/counterup.min.js') }}">
-    
-  </script>
-  <script src="{{ asset('js/waypoints-sticky.min.js') }}">
-    
-  </script>
-  <script src="{{ asset('js/isotope.pkgd.min.js') }}">
-    
-  </script>
-  <script src="{{ asset('js/imagesloaded.pkgd.min.js') }}">
-    
-  </script>
-  <script src="{{ asset('js/owl.carousel.min.js') }}">
-    
-  </script>
-  <script src="{{ asset('js/theia-sticky-sidebar.js') }}">
-    
-  </script>
-  <script src="{{ asset('js/lc_lightbox.lite.js') }}">
-    
-  </script>
-  <script src="{{ asset('js/bootstrap-select.min.js') }}">
-    
-  </script>
-  <script src="{{ asset('js/dropzone.js') }}">
-    
-  </script>
-  <script src="{{ asset('js/jquery.scrollbar.js') }}">
-    
-  </script>
-  <script src="{{ asset('js/bootstrap-datepicker.js') }}">
-    
-  </script>
-  <script src="{{ asset('js/jquery.dataTables.min.js') }}">
-    
-  </script>
-  <script src="{{ asset('js/dataTables.bootstrap5.min.js') }}">
-    
-  </script>
-  <script src="{{ asset('js/chart.js') }}">
-    
-  </script>
-  <script src="{{ asset('js/anm.js') }}">
-    
-  </script>
-  <script src="{{ asset('js/bootstrap-slider.min.js') }}">
-    
-  </script>
-  <script src="{{ asset('js/swiper-bundle.min.js') }}">
-    
-  </script>
-  <script src="{{ asset('js/custom.js') }}">
-    
-  </script>
-  <script src="{{ asset('js/switcher.js') }}">
-    
-  </script>
-</body>
-</html>
+    {{-- Section Work --}}
+    @include('components/section/work')
+  @endslot
 @end

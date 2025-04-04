@@ -1,68 +1,87 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>À propos de Makira</title>
-
-  @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body>
-  <div class="page-wraper">
-    @include('partials/header')
-
-    <div class="page-content">
-  {{-- Section Hero personnalisée --}}
-  <div class="section-full p-t120 p-b90 site-bg-gray">
-    <div class="container">
-      <div class="section-head center wt-small-separator-outer">
-        <div class="wt-small-separator site-text-primary">
-          <div>À propos de nous</div>
-        </div>
-        <h2>Découvrez notre histoire</h2>
-      </div>
-    </div>
-  </div>
-
-  {{-- Section Contenu --}}
-  <div class="section-full p-t120 p-b90 site-bg-white">
-    <div class="container">
-      <div class="row">
-        {{-- Colonne de gauche --}}
-        <div class="col-lg-6 col-md-12 m-b30">
-          <div class="about-section-one">
-            <div class="left-part">
-              <h3>Notre Mission</h3>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-              
-              <ul class="list-check-squer">
-                <li>Expertise reconnue</li>
-                <li>Service personnalisé</li>
-                <li>Innovation continue</li>
-              </ul>
+@component('layouts/main')
+  @slot('title')
+    <title>
+      Makira - À propos
+    </title>
+  @endslot
+  
+  @slot('main')
+    {{-- Section Hero personnalisée --}}
+    <div class="section-full p-t120 p-b90 site-bg-gray">
+      <div class="container">
+        <div class="section-head center wt-small-separator-outer">
+          <div class="wt-small-separator site-text-primary">
+            <div>
+              À propos de nous
             </div>
           </div>
+          <h2>
+            Découvrez notre histoire
+          </h2>
         </div>
+      </div>
+    </div>
 
-        {{-- Colonne de droite --}}
-        <div class="col-lg-6 col-md-12 m-b30">
-          <div class="about-section-one">
-            <div class="right-part">
-              <h3>Nos Valeurs</h3>
-              <div class="section-content">
-                <div class="feature-list">
-                  <div class="feature-item m-b30">
-                    <div class="icon-content">
-                      <i class="fas fa-check-circle site-text-primary"></i>
-                      <h4>Qualité</h4>
-                      <p>Nous nous engageons à fournir des services de la plus haute qualité.</p>
+    {{-- Section Contenu --}}
+    <div class="section-full p-t120 p-b90 site-bg-white">
+      <div class="container">
+        <div class="row">
+          {{-- Colonne de gauche --}}
+          <div class="col-lg-6 col-md-12 m-b30">
+            <div class="about-section-one">
+              <div class="left-part">
+                <h3>
+                  Notre Mission
+                </h3>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </p>
+
+                <ul class="list-check-squer">
+                  <li>
+                    Expertise reconnue
+                  </li>
+                  <li>
+                    Service personnalisé
+                  </li>
+                  <li>
+                    Innovation continue
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          {{-- Colonne de droite --}}
+          <div class="col-lg-6 col-md-12 m-b30">
+            <div class="about-section-one">
+              <div class="right-part">
+                <h3>
+                  Nos Valeurs
+                </h3>
+                <div class="section-content">
+                  <div class="feature-list">
+                    <div class="feature-item m-b30">
+                      <div class="icon-content">
+                        <i class="fas fa-check-circle site-text-primary"></i>
+                        <h4>
+                          Qualité
+                        </h4>
+                        <p>
+                          Nous nous engageons à fournir des services de la plus haute qualité.
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                  <div class="feature-item m-b30">
-                    <div class="icon-content">
-                      <i class="fas fa-users site-text-primary"></i>
-                      <h4>Collaboration</h4>
-                      <p>Le travail d'équipe est au cœur de notre approche.</p>
+                    <div class="feature-item m-b30">
+                      <div class="icon-content">
+                        <i class="fas fa-users site-text-primary"></i>
+                        <h4>
+                          Collaboration
+                        </h4>
+                        <p>
+                          Le travail d'équipe est au cœur de notre approche.
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -72,46 +91,39 @@
         </div>
       </div>
     </div>
-  </div>
 
-  {{-- Section Statistiques --}}
-  <div class="section-full p-t120 p-b90 site-bg-gray">
-    <div class="container">
-      <div class="counter-blocks">
-        <div class="row justify-content-center">
-          <div class="col-lg-3 col-md-6 m-b30">
-            <div class="counter-box">
-              <h2 class="counter">1500+</h2>
-              <span class="site-text-primary">Clients satisfaits</span>
+    {{-- Section Statistiques --}}
+    <div class="section-full p-t120 p-b90 site-bg-gray">
+      <div class="container">
+        <div class="counter-blocks">
+          <div class="row justify-content-center">
+            <div class="col-lg-3 col-md-6 m-b30">
+              <div class="counter-box">
+                <h2 class="counter">
+                  1500+
+                </h2>
+                <span class="site-text-primary">Clients satisfaits</span>
+              </div>
             </div>
-          </div>
-          <div class="col-lg-3 col-md-6 m-b30">
-            <div class="counter-box">
-              <h2 class="counter">10</h2>
-              <span class="site-text-primary">Années d'expérience</span>
+            <div class="col-lg-3 col-md-6 m-b30">
+              <div class="counter-box">
+                <h2 class="counter">
+                  10
+                </h2>
+                <span class="site-text-primary">Années d'expérience</span>
+              </div>
             </div>
-          </div>
-          <div class="col-lg-3 col-md-6 m-b30">
-            <div class="counter-box">
-              <h2 class="counter">100%</h2>
-              <span class="site-text-primary">Satisfaction client</span>
+            <div class="col-lg-3 col-md-6 m-b30">
+              <div class="counter-box">
+                <h2 class="counter">
+                  100%
+                </h2>
+                <span class="site-text-primary">Satisfaction client</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-    </div>
-
-    @include('partials/footer')
-    @include('components/common/signupopup')
-    @include('components/common/loginpopup')
-  </div>
-
-  {{-- Scripts JS --}}
-  <script src="{{ asset('js/jquery-3.6.0.min.js') }}"></script>
-  <script src="{{ asset('js/popper.min.js') }}"></script>
-  <script src="{{ asset('js/bootstrap.min.js') }}"></script>
-  <script src="{{ asset('js/custom.js') }}"></script>
-</body>
-</html>
+  @endslot
+@end

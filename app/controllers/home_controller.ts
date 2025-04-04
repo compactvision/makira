@@ -1,3 +1,4 @@
+import User from '#models/user'
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class HomeController {
@@ -9,16 +10,16 @@ export default class HomeController {
     return view.render('pages/about')
   }
 
-  public async candidat({ view }: HttpContext) {
-    return view.render('pages/candidat/candidat')
+  public async profile({ auth, view }: HttpContext) {
+    const user = await User.query().where('id', auth.user!.id).preload('candidate').firstOrFail()
+    return view.render('pages/profile/profile', {
+      user: user,
+      candidate: user.candidate,
+    })
   }
 
-  public async dashboard({ view }: HttpContext) {
-    return view.render('pages/dashboard/dashboard')
-  }
-
-  public async profile({ view }: HttpContext) {
-    return view.render('pages/profile/profile')
+  public async resume({ view }: HttpContext) {
+    return view.render('pages/profile/resume')
   }
 
   public async contact({ view }: HttpContext) {

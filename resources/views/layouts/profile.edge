@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    @if ($slots.title)
+    {{{ await $slots.title() }}}
+    @else
+    <title>
+        Makira - Accueil 
+    </title>
+    @endif
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+  </head>
+  <body>
+    <div class="page-wraper">
+      @include('partials/header')
+
+      <div class="page-content">
+        <!-- INNER PAGE BANNER -->
+        <div class="wt-bnr-inr overlay-wraper bg-center" style="background-image:url(images/banner/1.jpg);">
+          <div class="overlay-main site-bg-white opacity-01">
+          </div>
+          <div class="container">
+            <div class="wt-bnr-inr-entry">
+              <div class="banner-title-outer">
+                <div class="banner-title-name">
+                  <h2 class="wt-title">
+                    Profile
+                  </h2>
+                </div>
+              </div>
+              <!-- BREADCRUMB ROW -->
+
+              <div>
+                <ul class="wt-breadcrumb breadcrumb-style-2">
+                  <li>
+                    <a href="{{ route('home') }}">Accueil</a>
+                  </li>
+                  <li>
+                    {{ auth.user.name }} - Profile
+                  </li>
+                </ul>
+              </div>
+
+              <!-- BREADCRUMB ROW END -->
+            </div>
+          </div>
+        </div>
+        <!-- INNER PAGE BANNER END -->
+
+        <!-- OUR BLOG START -->
+        <div class="section-full p-t120  p-b90 site-bg-white">
+
+          <div class="container">
+            <div class="row">
+
+              <div class="col-xl-3 col-lg-4 col-md-12 rightSidebar m-b30">
+
+                <div class="side-bar-st-1">
+
+                  <div class="twm-candidate-profile-pic">
+
+                    <img src="images/user-avtar/pic4.jpg" alt="" />
+                    <div class="upload-btn-wrapper">
+
+                      <div id="upload-image-grid">
+                      </div>
+                      <button class="site-button button-sm">Upload Photo</button>
+                      <input type="file" name="myfile" id="file-uploader" accept=".jpg, .jpeg, .png" />
+                    </div>
+
+                  </div>
+                  <div class="twm-mid-content text-center">
+                    <a href="#" class="twm-job-title">
+                      <h4>
+                        @if(candidate)
+                            {{ candidate.nom + ' ' + candidate.prenom }}
+                        @else
+                            Invité
+                        @endif
+                      </h4>
+                    </a>
+                    <p>
+                        @if(candidate)
+                            {{ candidate.poste }}
+                        @else
+                            Pas d'Informations
+                        @endif 
+                    </p>
+                  </div>
+
+                  <div class="twm-nav-list-1">
+                    <ul>
+                      <li class="{{ request.url() === '/profile' ? 'active' : '' }}">
+                        <a href="{{ route('profile') }}">                          <i class="fa fa-user"></i>Mon Profile</a>
+                      </li>
+                      <li class="{{ request.url() === '/resume' ? 'active' : '' }}">
+                        <a href="{{ route('resume') }}">                          <i class="fa fa-receipt"></i>Mon resume</a>
+                      </li>
+                      <br>
+                      <li>
+                        <form action="{{ route('logout') }}" method="post">
+                            {{ csrfField() }}
+                            <button type="submit" class="btn btn-danger mr-1"><i class="fa fa-logout"></i>Se deconnecter</button>
+                        </form>
+                      </li>
+                    </ul>
+                  </div>
+
+                </div>
+
+              </div>
+
+              {{{ await $slots.main() }}}
+
+            </div>
+          </div>
+        </div>
+        <!-- OUR BLOG END -->
+      </div>
+
+      @include('partials/footer')
+      @include('components/common/signupopup')
+      @include('components/common/loginpopup')
+    </div>
+
+    {{-- Scripts JS --}}
+    <script src="{{ asset('js/jquery-3.6.0.min.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/popper.min.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/bootstrap.min.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/magnific-popup.min.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/waypoints.min.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/counterup.min.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/waypoints-sticky.min.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/isotope.pkgd.min.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/imagesloaded.pkgd.min.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/owl.carousel.min.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/theia-sticky-sidebar.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/lc_lightbox.lite.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/bootstrap-select.min.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/dropzone.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/jquery.scrollbar.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/bootstrap-datepicker.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/jquery.dataTables.min.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/dataTables.bootstrap5.min.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/chart.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/anm.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/bootstrap-slider.min.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/swiper-bundle.min.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/custom.js') }}">
+      
+    </script>
+    <script src="{{ asset('js/switcher.js') }}">
+      
+    </script>
+  </body>
+</html>
+@end
