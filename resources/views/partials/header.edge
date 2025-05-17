@@ -61,26 +61,26 @@
 
                   @else
                     <a class="twm-nav-sign-up" href="{{ route('profile') }}">
-                      <i class="feather-log-in"></i>{{ auth.user.name }}
+                      <i class="fas fa-sign-in-alt"></i>{{ auth.user.name }}
                                     </a>
 
                   @endif
                 @else
                   <a class="twm-nav-sign-up" data-bs-toggle="modal" href="#sign_up_popup" role="button">
-                    <i class="feather-log-in"></i>S'inscrire
+                    <i class="fas fa-sign-in-alt"></i>S'inscrire
                                 </a>
                 @endif
               </div>
               @if(auth.user && auth.user.role === 'admin')
                 <div class="twm-nav-btn-right">
                   <a href="{{ route('dashboard') }}" class="twm-nav-post-a-job">
-                    <i class="feather-briefcase"></i>Dashboard
+                    <i class="fas fa-suitcase"></i>Dashboard
                                   </a>
                 </div>
               @else
                 <div class="twm-nav-btn-right">
-                  <a href="#" class="twm-nav-post-a-job">
-                    <i class="feather-briefcase"></i>Envoyer CV
+                  <a href="{{ route('resume') }}" class="twm-nav-post-a-job">
+                    <i class="fas fa-suitcase"></i>Envoyer CV
                                 </a>
                 </div>
               @endif

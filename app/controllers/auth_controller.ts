@@ -1,3 +1,4 @@
+import Candidate from '#models/candidate'
 import User from '#models/user'
 import { createUserValidator } from '#validators/user'
 import type { HttpContext } from '@adonisjs/core/http'
@@ -23,6 +24,12 @@ export default class AuthController {
     try {
       const data = await request.validateUsing(createUserValidator)
       const user = await User.create(data)
+
+      if (user) {
+        await Candidate.create({
+          userId: user.id,
+        })
+      }
 
       session.flash('notification', {
         type: 'success',

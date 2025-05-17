@@ -7,7 +7,7 @@
         <div class="panel panel-default mb-3">
           <div class="panel-heading wt-panel-heading p-a20 panel-heading-with-btn ">
             <h4 class="panel-tittle m-a0">
-              Resume Headline
+              Poste
             </h4>
             <a
               data-bs-toggle="modal"
@@ -22,7 +22,7 @@
           <div class="panel-body wt-panel-body p-a20 ">
             <div class="twm-panel-inner">
               <p>
-                Senior UI / UX Designer and Developer at Google INC
+                {{ candidate.poste ?? 'Veuillez remplir votre poste actuel' }}
               </p>
             </div>
           </div>
@@ -30,24 +30,26 @@
           <div class="modal fade twm-saved-jobs-view" id="Resume_Headline" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered">
               <div class="modal-content">
-                <form>
-
+                <form id="headlineForm" method="POST" action="{{ route('update') }}">
+                  {{ csrfField() }}
                   <div class="modal-header">
                     <h2 class="modal-title">
-                      Resume Headline
+                      Titre du CV
                     </h2>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
 
                   <div class="modal-body">
                     <p>
-                      It is the first thing recruiters notice in your profile. Write concisely what makes you unique and right person for the job you are looking for.
+                      C'est la première chose que les recruteurs remarquent dans votre profil. Décrivez brièvement ce qui vous rend unique et la personne idéale pour le poste que vous recherchez.
                     </p>
 
                     <div class="row">
                       <div class="col-lg-12 col-md-12">
                         <div class="form-group twm-textarea-full">
-                          <textarea class="form-control" placeholder="Type Description"></textarea>
+                          <textarea name="poste" class="form-control" placeholder="Ex: Développeur Full Stack chez Google">
+                            {{ candidate.poste || "Ex: Développeur Full Stack chez Google" }}
+                          </textarea>
                         </div>
                       </div>
                     </div>
@@ -56,8 +58,8 @@
 
                   <div class="modal-footer">
 
-                    <button type="button" class="site-button" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="site-button">Save</button>
+                    <button type="button" class="site-button" data-bs-dismiss="modal">Fermer</button>
+                    <button type="submit" class="site-button">Enregistrer</button>
 
                   </div>
 
@@ -71,7 +73,7 @@
         <div class="panel panel-default mb-3">
           <div class="panel-heading wt-panel-heading p-a20 panel-heading-with-btn ">
             <h4 class="panel-tittle m-a0">
-              Key Skills
+              Competences
             </h4>
             <a data-bs-toggle="modal" href="#Key_Skills" role="button" title="Edit" class="site-text-primary">
               <span class="fa fa-edit"></span>
@@ -80,7 +82,14 @@
           <div class="panel-body wt-panel-body p-a20 ">
             <div class="tw-sidebar-tags-wrap">
               <div class="tagcloud">
-                <a href="javascript:void(0)">Finance</a>
+                @if(candidate.skills && candidate.skills.length > 0)
+                  @each(skill in candidate.skills)
+                    <a href="javascript:void(0)">{{ skill.name }}</a>
+                  @endeach
+                @else
+                  <a href="javascript:void(0)">Aucune compétence</a>
+                @endif
+                {{--  <a href="javascript:void(0)">Finance</a>
                 <a href="javascript:void(0)">Sales</a>
                 <a href="javascript:void(0)">Part-time</a>
                 <a href="javascript:void(0)">Administration</a>
@@ -89,41 +98,48 @@
                 <a href="javascript:void(0)">Developer</a>
                 <a href="javascript:void(0)">Work from home</a>
                 <a href="javascript:void(0)">IT Consulting</a>
-                <a href="javascript:void(0)">Manufacturing</a>
+                <a href="javascript:void(0)">Manufacturing</a>  --}}
               </div>
             </div>
           </div>
           <!--Modal popup -->
-          <div class="modal fade twm-saved-jobs-view" id="Key_Skills" tabindex="-1">
+          <div class="modal fade twm-saved-jobs-view" id="Key_Skills" tabindex="-1" aria-labelledby="Key_Skills_Label" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
               <div class="modal-content">
-                <form>
-
+                <form id="skillsForm" method="POST" action="{{ route('update') }}">
+                  {{ csrfField() }}
+                  
                   <div class="modal-header">
-                    <h2 class="modal-title">
-                      Key Skills
+                    <h2 class="modal-title" id="Key_Skills_Label">
+                      Compétences
                     </h2>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
                   </div>
-
+          
                   <div class="modal-body">
-                    <p>
-                      It is the first thing recruiters notice in your profile. Write concisely what makes you unique and right person for the job you are looking for.
-                    </p>
-
+                    <p>Listez vos compétences séparées par des virgules :</p>
+                    <p class="text-danger">Ex : Leadership, Management, Communication</p>
+          
                     <div class="form-group">
-                      <input class="form-control" type="text" value="Finance, Sales, Retail, Engineering" />
+                      <input
+                        id="skillsInput"
+                        name="skills"
+                        class="form-control"
+                        type="text"
+                        value="{{ candidate.skills ? candidate.skills.join(', ') : '' }}"
+                        placeholder="Ex : Leadership, Management, Communication"
+                        oninput="updateSkillsCounter()"
+                      />
                     </div>
-
+                    <div id="skillsCounter" class="text-muted small mt-2">
+                      0 compétence(s) saisie(s)
+                    </div>
                   </div>
-
+          
                   <div class="modal-footer">
-
-                    <button type="button" class="site-button" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="site-button">Save</button>
-
+                    <button type="button" class="site-button" data-bs-dismiss="modal">Fermer</button>
+                    <button type="submit" class="site-button">Enregistrer</button>
                   </div>
-
                 </form>
               </div>
             </div>
@@ -141,27 +157,38 @@
             </a>
           </div>
           <div class="panel-body wt-panel-body p-a20 ">
+            @if(candidate.employments && candidate.employments.length > 0)
+            @each(employment in candidate.employments)
             <div class="twm-panel-inner">
               <p>
-                <b>Senior UI / UX Designer and Developer</b>
+                <b>{{ employment.position }}</b>
               </p>
               <p>
-                Google INC
+                {{ employment.company }}
               </p>
               <p>
-                Experience (6 Year)
+                {{ employment.start_date }} to {{ employment.end_date }}
               </p>
               <p>
-                Available to join in 1 Months
+                {{ employment.description }}
               </p>
             </div>
+            @endeach
+            @else
+            <div class="twm-panel-inner">
+              <p>
+                Aucune expérience
+              </p>
+            </div>
+            @endif
           </div>
 
           <!--Employment -->
           <div class="modal fade twm-saved-jobs-view" id="Employment" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered">
               <div class="modal-content">
-                <form>
+                <form action="{{ route('update.employment') }}" method="post">
+                  {{ csrfField() }}
 
                   <div class="modal-header">
                     <h2 class="modal-title">
@@ -177,7 +204,7 @@
                         <div class="form-group">
                           <label>Your Designation</label>
                           <div class="ls-inputicon-box">
-                            <input class="form-control" type="text" placeholder="Enter Your Designation" />
+                            <input class="form-control" type="text" name="position" placeholder="Enter Your Designation" />
                             <i class="fs-input-icon fa fa-address-card"></i>
                           </div>
                         </div>
@@ -186,7 +213,7 @@
                         <div class="form-group">
                           <label>Your Organization</label>
                           <div class="ls-inputicon-box">
-                            <input class="form-control" type="text" placeholder="Enter Your Organization" />
+                            <input class="form-control" type="text" name="company" placeholder="Enter Your Organization" />
                             <i class="fs-input-icon fa fa-building"></i>
                           </div>
                         </div>
@@ -197,13 +224,13 @@
                           <div class="row twm-form-radio-inline">
 
                             <div class="col-md-6">
-                              <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" />
+                              <input class="form-check-input" type="radio" name="is_current" value="1" id="flexRadioDefault1" />
                               <label class="form-check-label" for="flexRadioDefault1">
                                 Yes
                                                                 </label>
                             </div>
                             <div class="col-md-6">
-                              <input class="form-check-input" type="radio" name="flexRadioDefault" id="S_no" checked />
+                              <input class="form-check-input" type="radio" name="is_current" value="0" id="S_no" checked />
                               <label class="form-check-label" for="S_no">
                                 No
                                                                 </label>
@@ -220,7 +247,7 @@
                             <input
                               class="form-control datepicker"
                               data-provide="datepicker"
-                              name="company_since"
+                              name="start_date"
                               type="text"
                               placeholder="mm/dd/yyyy"
                             />
@@ -237,7 +264,7 @@
                             <input
                               class="form-control datepicker"
                               data-provide="datepicker"
-                              name="company_since"
+                              name="end_date"
                               type="text"
                               placeholder="mm/dd/yyyy"
                             />
@@ -248,7 +275,7 @@
                       <div class="col-md-12">
                         <div class="form-group mb-0">
                           <label>Describe your Job Profile</label>
-                          <textarea class="form-control" rows="3" placeholder="Describe your Job"></textarea>
+                          <textarea class="form-control" rows="3" name="description" placeholder="Describe your Job"></textarea>
                         </div>
                       </div>
 
@@ -259,7 +286,7 @@
                   <div class="modal-footer">
 
                     <button type="button" class="site-button" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="site-button">Save</button>
+                    <button type="submit" class="site-button">Save</button>
 
                   </div>
 
@@ -281,45 +308,38 @@
             </a>
           </div>
           <div class="panel-body wt-panel-body p-a20 ">
+            @if(candidate.educations && candidate.educations.length > 0)
+            @each(education in candidate.educations)
             <div class="twm-panel-inner">
               <p>
-                Mention your employment details including your current and previous company work experience
+                Mention your education details including your current and previous company work experience
               </p>
               <p>
-                2004 to 2006
+                De {{ education.startDate }} à {{ education.endDate }}
               </p>
               <p>
-                <b>BCA - Bachelor of Computer Applications</b>
+                <b>{{ education.degree }} - {{ education.school }}</b>
               </p>
               <p>
-                2006 to 2008
-              </p>
-              <p>
-                <b>MCA - Master of Computer Application</b>
-              </p>
-              <p>
-                2008 to 20011
-              </p>
-              <p>
-                <b>Design Communication Visual</b>
-              </p>
-              <p>
-                <a class="site-text-primary" href="javascript:;">Add Doctorate/PhD</a>
-              </p>
-              <p>
-                <a class="site-text-primary" href="javascript:;">Add Masters/Post-Graduation</a>
-              </p>
-              <p>
-                <a class="site-text-primary" href="javascript:;">Add Graduation/Diploma</a>
+                {{ education.description }}
               </p>
             </div>
+            @endeach
+            @else
+            <div class="twm-panel-inner">
+              <p>
+                Aucune etude
+              </p>
+            </div>
+            @endif
           </div>
 
           <!--Education -->
           <div class="modal fade twm-saved-jobs-view" id="Education" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered">
               <div class="modal-content">
-                <form>
+                <form method="POST" action="{{ route('update.education') }}">
+                  {{ csrfField() }}
 
                   <div class="modal-header">
                     <h2 class="modal-title">
@@ -329,81 +349,104 @@
                   </div>
 
                   <div class="modal-body">
+
                     <div class="row">
-
                       <div class="col-xl-12 col-lg-12">
                         <div class="form-group">
-                          <label>Education</label>
+                          <label>Your school</label>
                           <div class="ls-inputicon-box">
-                            <select class="wt-select-box selectpicker" data-live-search="true" title="" data-bv-field="size">
-                              <option class="bs-title-option" value="">
-                                Select Category
-                              </option>
-                              <option>
-                                Graduation/Diploma
-                              </option>
-                              <option>
-                                Masters/Post-Graduation
-                              </option>
-                            </select>
-                            <i class="fs-input-icon fa fa-user-graduate"></i>
+                            <input class="form-control" type="text" name="school" placeholder="Enter Your School" />
+                            <i class="fs-input-icon fa fa-address-card"></i>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-xl-12 col-lg-12">
+                        <div class="form-group">
+                          <label>Your degree</label>
+                          <div class="ls-inputicon-box">
+                            <input class="form-control" type="text" name="degree" placeholder="Enter Your Degree" />
+                            <i class="fs-input-icon fa fa-building"></i>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-xl-12 col-lg-12">
+                        <div class="form-group">
+                          <label>Your field of study</label>
+                          <div class="ls-inputicon-box">
+                            <input class="form-control" type="text" name="field_of_study" placeholder="Enter Your Field of Study" />
+                            <i class="fs-input-icon fa fa-building"></i>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-xl-12 col-lg-12">
+                        <div class="form-group">
+                          <label>Is this your current education?</label>
+                          <div class="row twm-form-radio-inline">
+
+                            <div class="col-md-6">
+                              <input class="form-check-input" type="radio" name="is_current" value="1" id="flexRadioDefault10" />
+                              <label class="form-check-label" for="flexRadioDefault10">
+                                Yes
+                                                                </label>
+                            </div>
+                            <div class="col-md-6">
+                              <input class="form-check-input" type="radio" name="is_current" value="0" id="flexRadioDefault11" checked />
+                              <label class="form-check-label" for="flexRadioDefault11">
+                                No
+                                                                </label>
+                            </div>
                           </div>
                         </div>
                       </div>
 
-                      <div class="col-xl-12 col-lg-12">
+                      <!--Start Date-->
+                      <div class="col-md-6">
                         <div class="form-group">
-                          <label>Course</label>
+                          <label>Started Learning From</label>
                           <div class="ls-inputicon-box">
-                            <select class="wt-select-box selectpicker" data-live-search="true" title="" data-bv-field="size">
-                              <option class="bs-title-option" value="">
-                                Select Course
-                              </option>
-                              <option>
-                                BBA- Bachelor of Business Administration
-                              </option>
-                              <option>
-                                BFA- Bachelor of Fine Arts
-                              </option>
-                              <option>
-                                BSW- Bachelor of Social Work
-                              </option>
-                            </select>
-                            <i class="fs-input-icon fa fa-book"></i>
+                            <input
+                              class="form-control datepicker"
+                              data-provide="datepicker"
+                              name="start_date"
+                              type="text"
+                              placeholder="mm/dd/yyyy"
+                            />
+                            <i class="fs-input-icon far fa-calendar"></i>
                           </div>
                         </div>
                       </div>
 
-                      <div class="col-xl-12 col-lg-12">
+                      <!--End Date-->
+                      <div class="col-md-6">
                         <div class="form-group">
-                          <label>University/Institute</label>
+                          <label>Ended Learning From</label>
                           <div class="ls-inputicon-box">
-                            <select class="wt-select-box selectpicker" data-live-search="true" title="" data-bv-field="size">
-                              <option class="bs-title-option" value="">
-                                Select University
-                              </option>
-                              <option>
-                                University of Cambridge
-                              </option>
-                              <option>
-                                Stanford University
-                              </option>
-                              <option>
-                                Imperial College London
-                              </option>
-                            </select>
-                            <i class="fs-input-icon fas fa-book-reader"></i>
+                            <input
+                              class="form-control datepicker"
+                              data-provide="datepicker"
+                              name="end_date"
+                              type="text"
+                              placeholder="mm/dd/yyyy"
+                            />
+                            <i class="fs-input-icon far fa-calendar"></i>
                           </div>
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="form-group mb-0">
+                          <label>Describe your Education</label>
+                          <textarea class="form-control" rows="3" name="description" placeholder="Describe your Education"></textarea>
                         </div>
                       </div>
 
                     </div>
+
                   </div>
 
                   <div class="modal-footer">
 
                     <button type="button" class="site-button" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="site-button">Save</button>
+                    <button type="submit" class="site-button">Save</button>
 
                   </div>
 
@@ -453,18 +496,19 @@
 
                   <tbody>
                     <!--1-->
+                    @each(itSkill in candidate.itSkills)
                     <tr>
                       <td>
-                        Python
+                        {{ itSkill.name }}
                       </td>
                       <td>
-                        13
+                        {{ itSkill.level }}
                       </td>
                       <td>
-                        2020
+                        {{ itSkill.lastUsed }}
                       </td>
                       <td>
-                        1 Year
+                        {{ itSkill.startDateYear }}
                       </td>
                       <td>
                         <a data-bs-toggle="modal" href="#IT_skills" role="button" title="Edit" class="site-text-primary">
@@ -472,86 +516,14 @@
                         </a>
                       </td>
                     </tr>
-                    <!--2-->
+                    @endeach
+                    @if(candidate.itSkills.length === 0)
                     <tr>
-                      <td>
-                        Bootstrap
-                      </td>
-                      <td>
-                        5
-                      </td>
-                      <td>
-                        2021
-                      </td>
-                      <td>
-                        1 Year
-                      </td>
-                      <td>
-                        <a data-bs-toggle="modal" href="#IT_skills" role="button" title="Edit" class="site-text-primary">
-                          <span class="fa fa-edit"></span>
-                        </a>
+                      <td colspan="5">
+                        No IT Skills
                       </td>
                     </tr>
-                    <!--3-->
-                    <tr>
-                      <td>
-                        HTML
-                      </td>
-                      <td>
-                        5
-                      </td>
-                      <td>
-                        2020
-                      </td>
-                      <td>
-                        1 Year
-                      </td>
-                      <td>
-                        <a data-bs-toggle="modal" href="#IT_skills" role="button" title="Edit" class="site-text-primary">
-                          <span class="fa fa-edit"></span>
-                        </a>
-                      </td>
-                    </tr>
-                    <!--4-->
-                    <tr>
-                      <td>
-                        Photoshop
-                      </td>
-                      <td>
-                        CC-2023
-                      </td>
-                      <td>
-                        2023
-                      </td>
-                      <td>
-                        1 Year
-                      </td>
-                      <td>
-                        <a data-bs-toggle="modal" href="#IT_skills" role="button" title="Edit" class="site-text-primary">
-                          <span class="fa fa-edit"></span>
-                        </a>
-                      </td>
-                    </tr>
-                    <!--5-->
-                    <tr>
-                      <td>
-                        Css
-                      </td>
-                      <td>
-                        3
-                      </td>
-                      <td>
-                        2018
-                      </td>
-                      <td>
-                        1 Year
-                      </td>
-                      <td>
-                        <a data-bs-toggle="modal" href="#IT_skills" role="button" title="Edit" class="site-text-primary">
-                          <span class="fa fa-edit"></span>
-                        </a>
-                      </td>
-                    </tr>
+                    @endif
 
                   </tbody>
                 </table>
@@ -563,7 +535,8 @@
           <div class="modal fade twm-saved-jobs-view" id="IT_skills" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered">
               <div class="modal-content">
-                <form>
+                <form method="POST" action="{{ route('update.it-skill') }}">
+                  {{ csrfField() }}
 
                   <div class="modal-header">
                     <h2 class="modal-title">
@@ -577,9 +550,9 @@
                     <div class="row">
                       <div class="col-xl-12 col-lg-12">
                         <div class="form-group">
-                          <label>IT Skills</label>
+                          <label>IT Skills Name</label>
                           <div class="ls-inputicon-box">
-                            <input class="form-control" type="text" placeholder="Enter IT Skills" />
+                            <input class="form-control" name="name" type="text" placeholder="Enter IT Skills" />
                             <i class="fs-input-icon fa fa-address-card"></i>
                           </div>
                         </div>
@@ -587,9 +560,9 @@
 
                       <div class="col-xl-6 col-lg-12 col-md-12">
                         <div class="form-group">
-                          <label>Version</label>
+                          <label>Level</label>
                           <div class="ls-inputicon-box">
-                            <input class="form-control" type="text" placeholder="Enter Version" />
+                            <input class="form-control" name="level" type="text" placeholder="Enter Version" />
                             <i class="fs-input-icon fa fa-info"></i>
                           </div>
                         </div>
@@ -599,15 +572,57 @@
                         <div class="form-group">
                           <label>Last Used</label>
                           <div class="ls-inputicon-box">
-                            <select class="wt-select-box selectpicker" data-live-search="true" title="" data-bv-field="size">
+                            <select class="wt-select-box selectpicker" name="lastUsed" data-live-search="true" title="" data-bv-field="size">
                               <option class="bs-title-option" value="">
                                 Select Category
                               </option>
-                              <option>
+                              <option value="2025">
+                                2025
+                              </option>
+                              <option value="2024">
+                                2024
+                              </option>
+                              <option value="2023">
+                                2023
+                              </option>
+                              <option value="2022">
+                                2022
+                              </option>
+                              <option value="2021">
                                 2021
                               </option>
-                              <option>
+                              <option value="2020">
                                 2020
+                              </option>
+                              <option value="2019">
+                                2019
+                              </option>
+                              <option value="2018">
+                                2018
+                              </option>
+                              <option value="2017">
+                                2017
+                              </option>
+                              <option value="2016">
+                                2016
+                              </option>
+                              <option value="2015">
+                                2015
+                              </option>
+                              <option value="2014">
+                                2014
+                              </option>
+                              <option value="2013">
+                                2013
+                              </option>
+                              <option value="2012">
+                                2012
+                              </option>
+                              <option value="2011">
+                                2011
+                              </option>
+                              <option value="2010">
+                                2010
                               </option>
                             </select>
                             <i class="fs-input-icon fa fa-calendar"></i>
@@ -617,18 +632,120 @@
 
                       <div class="col-xl-6 col-lg-12 col-md-12">
                         <div class="form-group">
-                          <label>Experience year</label>
+                          <label>Commencer en quelle année</label>
                           <div class="ls-inputicon-box">
-                            <select class="wt-select-box selectpicker" data-live-search="true" title="" data-bv-field="size">
+                            <select class="wt-select-box selectpicker" name="startDateYear" data-live-search="true" title="" data-bv-field="size">
                               <option class="bs-title-option" value="">
                                 Select Category
                               </option>
-                              <option>
+                              <option value="2025">
+                                2025
+                              </option>
+                              <option value="2024">
+                                2024
+                              </option>
+                              <option value="2023">
+                                2023
+                              </option>
+                              <option value="2022">
+                                2022
+                              </option>
+                              <option value="2021">
                                 2021
                               </option>
-                              <option>
+                              <option value="2020">
                                 2020
                               </option>
+                              <option value="2019">
+                                2019
+                              </option>
+                              <option value="2018">
+                                2018
+                              </option>
+                              <option value="2017">
+                                2017
+                              </option>
+                              <option value="2016">
+                                2016
+                              </option>
+                              <option value="2015">
+                                2015
+                              </option>
+                              <option value="2014">
+                                2014
+                              </option>
+                              <option value="2013">
+                                2013
+                              </option>
+                              <option value="2012">
+                                2012
+                              </option>
+                              <option value="2011">
+                                2011
+                              </option>
+                              <option value="2010">
+                                2010
+                              </option>
+                              <option value="2009">
+                                2009
+                              </option>
+                              <option value="2008">
+                                2008
+                              </option>
+                              <option value="2007">
+                                2007
+                              </option>
+                              <option value="2006">
+                                2006
+                              </option>
+                              <option value="2005">
+                                2005
+                              </option>
+                              <option value="2004">
+                                2004
+                              </option>
+                              <option value="2003">
+                                2003
+                              </option>
+                              <option value="2002">
+                                2002
+                              </option>
+                              <option value="2001">
+                                2001
+                              </option>
+                              <option value="2000">
+                                2000
+                              </option>
+                              <option value="1999">
+                                1999
+                              </option>
+                              <option value="1998">
+                                1998
+                              </option>
+                              <option value="1997">
+                                1997
+                              </option>
+                              <option value="1996">
+                                1996
+                              </option>
+                              <option value="1995">
+                                1995
+                              </option>
+                              <option value="1994">
+                                1994
+                              </option>
+                              <option value="1993">
+                                1993
+                              </option>
+                              <option value="1992">
+                                1992
+                              </option>
+                              <option value="1991">
+                                1991
+                              </option>
+                              <option value="1990">
+                                1990
+                              </option> 
                             </select>
                             <i class="fs-input-icon fa fa-user-edit"></i>
                           </div>
@@ -639,15 +756,45 @@
                         <div class="form-group">
                           <label>Month</label>
                           <div class="ls-inputicon-box">
-                            <select class="wt-select-box selectpicker" data-live-search="true" title="" data-bv-field="size">
+                            <select class="wt-select-box selectpicker" name="startDateMonth" data-live-search="true" title="" data-bv-field="size">
                               <option class="bs-title-option" value="">
                                 Select Category
                               </option>
-                              <option>
+                              <option value="January">
                                 January
                               </option>
-                              <option>
+                              <option value="February">
                                 February
+                              </option>
+                              <option value="March">
+                                March
+                              </option>
+                              <option value="April">
+                                April
+                              </option>
+                              <option value="May">
+                                May
+                              </option>
+                              <option value="June">
+                                June
+                              </option>
+                              <option value="July">
+                                July
+                              </option>
+                              <option value="August">
+                                August
+                              </option>
+                              <option value="September">
+                                September
+                              </option>
+                              <option value="October">
+                                October
+                              </option>
+                              <option value="November">
+                                November
+                              </option>
+                              <option value="December">
+                                December
                               </option>
                             </select>
                             <i class="fs-input-icon fa fa-user-edit"></i>
@@ -662,7 +809,7 @@
                   <div class="modal-footer">
 
                     <button type="button" class="site-button" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="site-button">Save</button>
+                    <button type="submit" class="site-button">Save</button>
 
                   </div>
 
@@ -674,7 +821,7 @@
         </div>
 
         <!--Project-->
-        <div class="panel panel-default mb-3">
+        {{--  <div class="panel panel-default mb-3">
           <div class="panel-heading wt-panel-heading p-a20 panel-heading-with-btn ">
             <h4 class="panel-tittle m-a0">
               Project
@@ -830,7 +977,7 @@
             </div>
           </div>
 
-        </div>
+        </div>  --}}
 
         <!--Desired Career Profile-->
         <div class="panel panel-default mb-3">
@@ -950,7 +1097,8 @@
           <div class="modal fade twm-saved-jobs-view" id="Desired_Career" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered">
               <div class="modal-content">
-                <form>
+                <form id="desiredCareerForm" method="POST" action="{{ route('update.desired-career') }}">
+                  {{ csrfField() }}
 
                   <div class="modal-header">
                     <h2 class="modal-title">
@@ -967,7 +1115,7 @@
                         <div class="form-group">
                           <label>Industry</label>
                           <div class="ls-inputicon-box">
-                            <select class="wt-select-box selectpicker" data-live-search="true" title="" data-bv-field="size">
+                            <select name="industry" class="wt-select-box selectpicker" data-live-search="true" title="" data-bv-field="size">
                               <option>
                                 Accounting / Finance
                               </option>
@@ -994,7 +1142,7 @@
                         <div class="form-group">
                           <label>Functional Area / Department</label>
                           <div class="ls-inputicon-box">
-                            <select class="wt-select-box selectpicker" data-live-search="true" title="" data-bv-field="size">
+                            <select name="functionalArea" class="wt-select-box selectpicker" data-live-search="true" title="" data-bv-field="size">
                               <option>
                                 Agent
                               </option>
@@ -1024,7 +1172,7 @@
                         <div class="form-group">
                           <label>Role</label>
                           <div class="ls-inputicon-box">
-                            <select class="wt-select-box selectpicker" data-live-search="true" title="" data-bv-field="size">
+                            <select name="role" class="wt-select-box selectpicker" data-live-search="true" title="" data-bv-field="size">
                               <option>
                                 Creative
                               </option>
@@ -1056,13 +1204,13 @@
                           <div class="row twm-form-radio-inline">
 
                             <div class="col-md-6">
-                              <input class="form-check-input" type="radio" name="flexRadioDefault" id="Permanent" />
+                              <input class="form-check-input" type="radio" name="jobType" id="Permanent" />
                               <label class="form-check-label" for="Permanent">
                                 Permanent
                                                                 </label>
                             </div>
                             <div class="col-md-6">
-                              <input class="form-check-input" type="radio" name="flexRadioDefault" id="Contractual" checked />
+                              <input class="form-check-input" type="radio" name="jobType" id="Contractual" checked />
                               <label class="form-check-label" for="Contractual">
                                 Contractual
                                                                 </label>
@@ -1077,13 +1225,13 @@
                           <div class="row twm-form-radio-inline">
 
                             <div class="col-md-6">
-                              <input class="form-check-input" type="radio" name="flexRadioDefault" id="Full_Time" />
+                              <input class="form-check-input" type="radio" name="employmentType" id="Full_Time" />
                               <label class="form-check-label" for="Full_Time">
                                 Full Time
                                                                 </label>
                             </div>
                             <div class="col-md-6">
-                              <input class="form-check-input" type="radio" name="flexRadioDefault" id="part_Time" checked />
+                              <input class="form-check-input" type="radio" name="employmentType" id="part_Time" checked />
                               <label class="form-check-label" for="part_Time">
                                 Part Time
                                                                 </label>
@@ -1098,19 +1246,19 @@
                           <div class="row twm-form-radio-inline">
 
                             <div class="col-md-4">
-                              <input class="form-check-input" type="radio" name="flexRadioDefault" id="S_day" />
+                              <input class="form-check-input" type="radio" name="preferredShift" id="S_day" />
                               <label class="form-check-label" for="S_day">
                                 Day
                                                                 </label>
                             </div>
                             <div class="col-md-4">
-                              <input class="form-check-input" type="radio" name="flexRadioDefault" id="S_night" checked />
+                              <input class="form-check-input" type="radio" name="preferredShift" id="S_night" checked />
                               <label class="form-check-label" for="S_night">
                                 Night
                                                                 </label>
                             </div>
                             <div class="col-md-4">
-                              <input class="form-check-input" type="radio" name="flexRadioDefault" id="s_part_time" checked />
+                              <input class="form-check-input" type="radio" name="preferredShift" id="s_part_time" checked />
                               <label class="form-check-label" for="s_part_time">
                                 Part Time
                                                                 </label>
@@ -1143,13 +1291,13 @@
                           <div class="row twm-form-radio-inline">
 
                             <div class="col-md-6">
-                              <input class="form-check-input" type="radio" name="US_Dollars" />
+                              <input class="form-check-input" type="radio" name="salaryCurrency" value="US_Dollars" />
                               <label class="form-check-label">
                                 US Dollars
                                                                 </label>
                             </div>
                             <div class="col-md-6">
-                              <input class="form-check-input" type="radio" name="US_Dollars" id="indian_rpees" checked />
+                              <input class="form-check-input" type="radio" name="salaryCurrency" value="Indian_Rpees" id="indian_rpees" checked />
                               <label class="form-check-label" for="indian_rpees">
                                 Indian Rupees
                                                                 </label>
@@ -1195,7 +1343,7 @@
                         <div class="form-group">
                           <label>Thousand</label>
                           <div class="ls-inputicon-box">
-                            <select class="wt-select-box selectpicker" data-live-search="true" title="" data-bv-field="size">
+                            <select name="salaryThousand" class="wt-select-box selectpicker" data-live-search="true" title="" data-bv-field="size">
                               <option class="bs-title-option" value="">
                                 Select Category
                               </option>
@@ -1239,7 +1387,7 @@
                         <div class="form-group">
                           <label>Desired Location</label>
                           <div class="ls-inputicon-box">
-                            <select class="wt-select-box selectpicker" data-live-search="true" title="" data-bv-field="size">
+                            <select name="desiredLocation" class="wt-select-box selectpicker" data-live-search="true" title="" data-bv-field="size">
                               <option class="bs-title-option" value="">
                                 Country
                               </option>
@@ -1280,7 +1428,7 @@
                         <div class="form-group mb-0">
                           <label>Desired Industry</label>
                           <div class="ls-inputicon-box">
-                            <select class="wt-select-box selectpicker" data-live-search="true" title="" data-bv-field="size">
+                            <select name="desiredIndustry" class="wt-select-box selectpicker" data-live-search="true" title="" data-bv-field="size">
                               <option class="bs-title-option" value="">
                                 Country
                               </option>
@@ -1309,7 +1457,7 @@
                   <div class="modal-footer">
 
                     <button type="button" class="site-button" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="site-button">Save</button>
+                    <button type="submit" class="site-button">Save</button>
 
                   </div>
 
@@ -1324,7 +1472,7 @@
         <div class="panel panel-default mb-3">
           <div class="panel-heading wt-panel-heading p-a20 panel-heading-with-btn ">
             <h4 class="panel-tittle m-a0">
-              Personal Details
+              Details personnels
             </h4>
             <a
               data-bs-toggle="modal"
@@ -1340,93 +1488,59 @@
             <div class="twm-panel-inner">
               <div class="row">
 
-                <div class="col-md-6">
-                  <div class="twm-s-detail-section">
-                    <div class="twm-title">
-                      Date of Birth
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="twm-s-detail-section">
+                      <div class="twm-title">
+                        Nom
+                      </div>
+                      <span class="twm-s-info-discription">{{ candidate.nom || 'N/A' }}</span>
                     </div>
-                    <span class="twm-s-info-discription">31 July 1998</span>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="twm-s-detail-section">
+                      <div class="twm-title">
+                        Prénom
+                      </div>
+                      <span class="twm-s-info-discription">{{ candidate.prenom || 'N/A' }}</span>
+                    </div>
                   </div>
                 </div>
 
                 <div class="col-md-6">
                   <div class="twm-s-detail-section">
                     <div class="twm-title">
-                      Permanent Address
+                      Date de naissance
                     </div>
-                    <span class="twm-s-info-discription">Add Permanent Address</span>
+                    <span class="twm-s-info-discription">{{ candidate.birthDate?.toFormat('dd-MM-yyyy') || 'N/A' }}</span>
                   </div>
                 </div>
 
                 <div class="col-md-6">
                   <div class="twm-s-detail-section">
                     <div class="twm-title">
-                      Gender
+                      Adresse
                     </div>
-                    <span class="twm-s-info-discription">Male</span>
+                    <span class="twm-s-info-discription">{{ candidate.address || 'N/A' }}</span>
                   </div>
                 </div>
 
                 <div class="col-md-6">
                   <div class="twm-s-detail-section">
                     <div class="twm-title">
-                      Area Pin Code
+                      Sexe
                     </div>
-                    <span class="twm-s-info-discription">302021</span>
+                    <span class="twm-s-info-discription">{{ candidate.sex || 'N/A' }}</span>
                   </div>
                 </div>
 
                 <div class="col-md-6">
                   <div class="twm-s-detail-section">
                     <div class="twm-title">
-                      Marital Status
+                      Statut matrimonial
                     </div>
-                    <span class="twm-s-info-discription">Single / unmarried</span>
-                  </div>
-                </div>
-
-                <div class="col-md-6">
-                  <div class="twm-s-detail-section">
-                    <div class="twm-title">
-                      Hometown
-                    </div>
-                    <span class="twm-s-info-discription">USA</span>
-                  </div>
-                </div>
-
-                <div class="col-md-6">
-                  <div class="twm-s-detail-section">
-                    <div class="twm-title">
-                      Passport Number
-                    </div>
-                    <span class="twm-s-info-discription">+123 456 7890</span>
-                  </div>
-                </div>
-
-                <div class="col-md-6">
-                  <div class="twm-s-detail-section">
-                    <div class="twm-title">
-                      Work permit of other country
-                    </div>
-                    <span class="twm-s-info-discription">UK</span>
-                  </div>
-                </div>
-
-                <div class="col-md-6">
-                  <div class="twm-s-detail-section">
-                    <div class="twm-title">
-                      Differently Abled
-                    </div>
-                    <span class="twm-s-info-discription">None</span>
-                  </div>
-                </div>
-
-                <div class="col-md-6">
-                  <div class="twm-s-detail-section">
-                    <div class="twm-title">
-                      Languages
-                    </div>
-                    <span class="twm-s-info-discription">English</span>
+                    <span class="twm-s-info-discription">{{ candidate.status || 'N/A' }}</span>
                   </div>
                 </div>
 
@@ -1438,11 +1552,11 @@
           <div class="modal fade twm-saved-jobs-view" id="Personal_Details" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered">
               <div class="modal-content">
-                <form>
-
+                <form action="{{ route('update') }}" method="post">
+                  {{ csrfField() }}
                   <div class="modal-header">
                     <h2 class="modal-title">
-                      Personal Detail
+                      Details Personnels
                     </h2>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
@@ -1453,14 +1567,15 @@
                       <!--Birth Date-->
                       <div class="col-xl-12 col-lg-12">
                         <div class="form-group">
-                          <label>Date of Birth</label>
+                          <label>Date de naissance</label>
                           <div class="ls-inputicon-box">
                             <input
                               class="form-control datepicker"
                               data-provide="datepicker"
-                              name="company_since"
+                              name="birth_date"
                               type="text"
-                              placeholder="mm/dd/yyyy"
+                              placeholder="Entrer votre date de naissance"
+                              value="{{ candidate.birthDate || 'mm/dd/yyyy' }}"
                             />
                             <i class="fs-input-icon far fa-calendar"></i>
                           </div>
@@ -1469,20 +1584,34 @@
 
                       <div class="col-xl-12 col-lg-12">
                         <div class="form-group">
-                          <label>Gender</label>
+                          <label>Genre</label>
                           <div class="row twm-form-radio-inline">
 
                             <div class="col-md-6">
-                              <input class="form-check-input" type="radio" name="flexRadioDefault" id="S_male" />
+                              <input
+                                class="form-check-input"
+                                type="radio"
+                                name="sex"
+                                id="S_male"
+                                value="M"
+                                {{ candidate.sex === 'M' ? 'checked' : '' }}
+                              />
                               <label class="form-check-label" for="S_male">
-                                Male
-                                                                    </label>
+                                Homme
+                              </label>
                             </div>
                             <div class="col-md-6">
-                              <input class="form-check-input" type="radio" name="flexRadioDefault" id="S_female" checked />
+                              <input
+                                class="form-check-input"
+                                type="radio"
+                                name="sex"
+                                id="S_female"
+                                value="F"
+                                {{ candidate.sex === 'F' ? 'checked' : '' }}
+                              />
                               <label class="form-check-label" for="S_female">
-                                Female
-                                                                    </label>
+                                Femme
+                              </label>
                             </div>
                           </div>
                         </div>
@@ -1490,9 +1619,15 @@
 
                       <div class="col-xl-12 col-lg-12">
                         <div class="form-group">
-                          <label>Permanent Address</label>
+                          <label>Adresse permanente</label>
                           <div class="ls-inputicon-box">
-                            <input class="form-control" type="text" placeholder="Enter Permanent Address" />
+                            <input
+                              class="form-control"
+                              name="address"
+                              type="text"
+                              placeholder="Entrer votre addresse permanante"
+                              value="{{ candidate.address || 'N/A' }}"
+                            />
                             <i class="fs-input-icon fa fa-map-marker-alt"></i>
                           </div>
                         </div>
@@ -1500,37 +1635,55 @@
 
                       <div class="col-xl-12 col-lg-12">
                         <div class="form-group">
-                          <label>Hometown</label>
+                          <label>Nom</label>
                           <div class="ls-inputicon-box">
-                            <input class="form-control" type="text" placeholder="Enter Hometown" />
-                            <i class="fs-input-icon fa fa-map-marker-alt"></i>
+                            <input
+                              class="form-control"
+                              type="text"
+                              name="nom"
+                              placeholder="Veuillez entrer votre nom"
+                              value="{{ candidate.nom || 'N/A' }}"
+                            />
+                            <i class="fs-input-icon fa fa-user"></i>
                           </div>
                         </div>
                       </div>
 
                       <div class="col-xl-12 col-lg-12">
                         <div class="form-group">
-                          <label>Pincode</label>
+                          <label>Prénom</label>
                           <div class="ls-inputicon-box">
-                            <input class="form-control" type="text" placeholder="Enter Pincode" />
-                            <i class="fs-input-icon fa fa-map-pin"></i>
+                            <input
+                              class="form-control"
+                              type="text"
+                              name="prenom"
+                              placeholder="Veuillez entrer votre prenom"
+                              value="{{ candidate.prenom || 'N/A' }}"
+                            />
+                            <i class="fs-input-icon fa fa-user"></i>
                           </div>
                         </div>
                       </div>
 
                       <div class="col-xl-12 col-lg-12">
                         <div class="form-group">
-                          <label>Marital Status</label>
+                          <label>Statut matrimonial</label>
                           <div class="ls-inputicon-box">
-                            <select class="wt-select-box selectpicker" data-live-search="true" title="" data-bv-field="size">
+                            <select
+                              class="wt-select-box selectpicker"
+                              name="status"
+                              data-live-search="true"
+                              title=""
+                              data-bv-field="size"
+                            >
                               <option class="bs-title-option" value="">
-                                Select Category
+                                Selectionner Statut
                               </option>
-                              <option>
-                                Married
+                              <option value="Marie" {{ candidate.status === 'Marie' ? 'selected' : '' }}>
+                                Marié
                               </option>
-                              <option>
-                                Single
+                              <option value="Celibataire" {{ candidate.status === 'Celibataire' ? 'selected' : '' }}>
+                                célibataire
                               </option>
                             </select>
                             <i class="fs-input-icon fa fa-user"></i>
@@ -1540,76 +1693,16 @@
 
                       <div class="col-xl-12 col-lg-12">
                         <div class="form-group">
-                          <label>Passport Number</label>
+                          <label>Numéro de Téléphone</label>
                           <div class="ls-inputicon-box">
-                            <input class="form-control" type="text" placeholder="Enter Passport Number" />
-                            <i class="fs-input-icon fa fa-star-of-life"></i>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="col-md-12">
-                        <div class="form-group">
-                          <label>What assistance do you need</label>
-                          <textarea class="form-control" rows="3" placeholder="Describe"></textarea>
-                        </div>
-                      </div>
-
-                      <div class="col-xl-12 col-lg-12">
-                        <div class="form-group mb-0">
-                          <label>Work Permit for Other Countries</label>
-                          <div class="ls-inputicon-box">
-                            <select class="wt-select-box selectpicker" data-live-search="true" title="" data-bv-field="size">
-                              <option class="bs-title-option" value="">
-                                Country
-                              </option>
-                              <option>
-                                Afghanistan
-                              </option>
-                              <option>
-                                Albania
-                              </option>
-                              <option>
-                                Algeria
-                              </option>
-                              <option>
-                                Andorra
-                              </option>
-                              <option>
-                                Angola
-                              </option>
-                              <option>
-                                Antigua and Barbuda
-                              </option>
-                              <option>
-                                Argentina
-                              </option>
-                              <option>
-                                Armenia
-                              </option>
-                              <option>
-                                Australia
-                              </option>
-                              <option>
-                                Austria
-                              </option>
-                              <option>
-                                Azerbaijan
-                              </option>
-                              <option>
-                                The Bahamas
-                              </option>
-                              <option>
-                                Bahrain
-                              </option>
-                              <option>
-                                Bangladesh
-                              </option>
-                              <option>
-                                Barbados
-                              </option>
-                            </select>
-                            <i class="fs-input-icon fa fa-globe-americas"></i>
+                            <input
+                              class="form-control"
+                              name="phone"
+                              type="text"
+                              placeholder="Enter Numéro de Téléphone"
+                              value="{{ candidate.phone || 'N/A' }}"
+                            />
+                            <i class="fs-input-icon fa fa-phone"></i>
                           </div>
                         </div>
                       </div>
@@ -1620,8 +1713,8 @@
 
                   <div class="modal-footer">
 
-                    <button type="button" class="site-button" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="site-button">Save</button>
+                    <button type="button" class="site-button" data-bs-dismiss="modal">Fermer</button>
+                    <button type="submit" class="site-button">Enregistrer</button>
 
                   </div>
 
@@ -1633,706 +1726,736 @@
         </div>
 
         <!--Attach Resume-->
-        <div class="panel panel-default mb-3">
-          <div class="panel-heading wt-panel-heading p-a20 panel-heading-with-btn ">
-            <h4 class="panel-tittle m-a0">
-              Attach Resume
-            </h4>
-          </div>
-          <div class="panel-body wt-panel-body p-a20 ">
-            <div class="twm-panel-inner">
-              <p>
-                Resume is the most important document recruiters look for. Recruiters generally do not look at profiles without resumes.
-              </p>
-              <div class="dashboard-cover-pic">
-                <form action="upload.php" class="dropzone">
-                </form>
-                <p>
-                  Upload Resume File size is 3 MB
-                </p>
-              </div>
+        <div class="twm-panel-inner">
+          <p>
+            Resume is the most important document recruiters look for.
+          </p>
 
+          @if(candidate.resumeUrl)
+            <div class="alert alert-success mb-3">
+              CV déjà uploadé : 
+              <a href="{{ asset(`uploads/${candidate.resumeUrl}`) }}" target="_blank">
+                Télécharger le CV
+              </a>
             </div>
-          </div>
-
-        </div>
-
-        <!--Accomplishments-->
-        <div class="panel panel-default mb-3">
-          <div class="panel-heading wt-panel-heading p-a20 panel-heading-with-btn ">
-            <h4 class="panel-tittle m-a0">
-              Accomplishments
-            </h4>
-          </div>
-          <div class="panel-body wt-panel-body p-a20 ">
-            <div class="twm-panel-inner">
-              <div class="twm-list-wrap">
-                <div class="twm-list-inner d-flex justify-content-between">
-                  <b>Online Profile</b>
-                  <a
-                    data-bs-toggle="modal"
-                    href="#Online_Profile"
-                    role="button"
-                    title="Edit"
-                    class="site-text-primary"
-                  >
-                    <span class="fa fa-edit"></span>
-                  </a>
-                </div>
-                <p>
-                  Add link to Online profiles (e.g. Linkedin, Facebook etc.).
-                </p>
-              </div>
-              <!--Online Profile Modal -->
-              <div class="modal fade twm-saved-jobs-view" id="Online_Profile" tabindex="-1">
-                <div class="modal-dialog modal-dialog-centered">
-                  <div class="modal-content">
-                    <form>
-
-                      <div class="modal-header">
-                        <h2 class="modal-title">
-                          Online Profiles
-                        </h2>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                      </div>
-
-                      <div class="modal-body">
-
-                        <div class="row">
-                          <div class="col-xl-12 col-lg-12">
-                            <div class="form-group">
-                              <label>Social Profile</label>
-                              <div class="ls-inputicon-box">
-                                <input class="form-control" type="text" placeholder="Enter Social Profile Name" />
-                                <i class="fs-input-icon fa fa-address-card"></i>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-xl-12 col-lg-12">
-                            <div class="form-group">
-                              <label>URL</label>
-                              <div class="ls-inputicon-box">
-                                <input class="form-control" type="text" placeholder="Enter Url" />
-                                <i class="fs-input-icon fa fa-globe-americas"></i>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div class="col-md-12">
-                            <div class="form-group mb-0">
-                              <label>Description</label>
-                              <textarea class="form-control" rows="3" placeholder="Type Description"></textarea>
-                            </div>
-                          </div>
-
-                        </div>
-
-                      </div>
-
-                      <div class="modal-footer">
-
-                        <button type="button" class="site-button" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="site-button">Save</button>
-
-                      </div>
-
-                    </form>
-                  </div>
-                </div>
-              </div>
-
-              <div class="twm-list-wrap">
-                <div class="twm-list-inner d-flex justify-content-between">
-                  <b>Work Sample</b>
-                  <a data-bs-toggle="modal" href="#Work_Sample" role="button" title="Edit" class="site-text-primary">
-                    <span class="fa fa-edit"></span>
-                  </a>
-                </div>
-                <p>
-                  Add link to your Projects (e.g. Github links etc.).
-                </p>
-              </div>
-              <!--Work Sample Modal -->
-              <div class="modal fade twm-saved-jobs-view" id="Work_Sample" tabindex="-1">
-                <div class="modal-dialog modal-dialog-centered">
-                  <div class="modal-content">
-                    <form>
-
-                      <div class="modal-header">
-                        <h2 class="modal-title">
-                          Work Sample
-                        </h2>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                      </div>
-
-                      <div class="modal-body">
-
-                        <div class="row">
-                          <div class="col-xl-12 col-lg-12">
-                            <div class="form-group">
-                              <label>Work Title</label>
-                              <div class="ls-inputicon-box">
-                                <input class="form-control" type="text" placeholder="Enter Work Title" />
-                                <i class="fs-input-icon fa fa-address-card"></i>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-xl-12 col-lg-12">
-                            <div class="form-group">
-                              <label>URL</label>
-                              <div class="ls-inputicon-box">
-                                <input class="form-control" type="text" placeholder="Enter Url" />
-                                <i class="fs-input-icon fa fa-globe-americas"></i>
-                              </div>
-                            </div>
-                          </div>
-
-                          <!--Start Date-->
-                          <div class="col-md-6">
-                            <div class="form-group">
-                              <label>Duration From</label>
-                              <div class="ls-inputicon-box">
-                                <input
-                                  class="form-control datepicker"
-                                  data-provide="datepicker"
-                                  name="company_since"
-                                  type="text"
-                                  placeholder="mm/dd/yyyy"
-                                />
-                                <i class="fs-input-icon far fa-calendar"></i>
-                              </div>
-                            </div>
-                          </div>
-
-                          <!--End Date-->
-                          <div class="col-md-6">
-                            <div class="form-group">
-                              <label>Duration to</label>
-                              <div class="ls-inputicon-box">
-                                <input
-                                  class="form-control datepicker"
-                                  data-provide="datepicker"
-                                  name="company_since"
-                                  type="text"
-                                  placeholder="mm/dd/yyyy"
-                                />
-                                <i class="fs-input-icon far fa-calendar"></i>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div class="col-xl-12 col-lg-12">
-                            <div class="form-group">
-                              <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="Working_on" checked />
-                              <label class="form-check-label" for="Working_on">
-                                I am currently working on this
-                                                                </label>
-                            </div>
-                          </div>
-
-                          <div class="col-md-12">
-                            <div class="form-group mb-0">
-                              <label>Description</label>
-                              <textarea class="form-control" rows="3" placeholder="Type Description"></textarea>
-                            </div>
-                          </div>
-
-                        </div>
-
-                      </div>
-
-                      <div class="modal-footer">
-
-                        <button type="button" class="site-button" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="site-button">Save</button>
-
-                      </div>
-
-                    </form>
-                  </div>
-                </div>
-              </div>
-
-              <div class="twm-list-wrap">
-                <div class="twm-list-inner d-flex justify-content-between">
-                  <b>White Paper / Research Publication / Journal Entry</b>
-                  <a
-                    data-bs-toggle="modal"
-                    href="#Research_Publication"
-                    role="button"
-                    title="Edit"
-                    class="site-text-primary"
-                  >
-                    <span class="fa fa-edit"></span>
-                  </a>
-                </div>
-                <p>
-                  Add links to your Online publications.
-                </p>
-              </div>
-              <!--White Paper / Research Publication / Journal Entry Modal -->
-              <div class="modal fade twm-saved-jobs-view" id="Research_Publication" tabindex="-1">
-                <div class="modal-dialog modal-dialog-centered">
-                  <div class="modal-content">
-                    <form>
-
-                      <div class="modal-header">
-                        <h2 class="modal-title">
-                          White Paper / Research Publication / Journal Entry
-                        </h2>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                      </div>
-
-                      <div class="modal-body">
-
-                        <div class="row">
-                          <div class="col-xl-12 col-lg-12">
-                            <div class="form-group">
-                              <label>Title</label>
-                              <div class="ls-inputicon-box">
-                                <input class="form-control" type="text" placeholder="Title" />
-                                <i class="fs-input-icon fa fa-address-card"></i>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-xl-12 col-lg-12">
-                            <div class="form-group">
-                              <label>URL</label>
-                              <div class="ls-inputicon-box">
-                                <input class="form-control" type="text" placeholder="Enter Url" />
-                                <i class="fs-input-icon fa fa-globe-americas"></i>
-                              </div>
-                            </div>
-                          </div>
-
-                          <!--Start Date-->
-                          <div class="col-md-12">
-                            <div class="form-group">
-                              <label>Published On</label>
-                              <div class="ls-inputicon-box">
-                                <input
-                                  class="form-control datepicker"
-                                  data-provide="datepicker"
-                                  name="company_since"
-                                  type="text"
-                                  placeholder="mm/dd/yyyy"
-                                />
-                                <i class="fs-input-icon far fa-calendar"></i>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div class="col-md-12">
-                            <div class="form-group mb-0">
-                              <label>Description</label>
-                              <textarea class="form-control" rows="3" placeholder="Type Description"></textarea>
-                            </div>
-                          </div>
-
-                        </div>
-
-                      </div>
-
-                      <div class="modal-footer">
-
-                        <button type="button" class="site-button" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="site-button">Save</button>
-
-                      </div>
-
-                    </form>
-                  </div>
-                </div>
-              </div>
-
-              <div class="twm-list-wrap">
-                <div class="twm-list-inner d-flex justify-content-between">
-                  <b>Presentation</b>
-                  <a
-                    data-bs-toggle="modal"
-                    href="#Presentation_modal"
-                    role="button"
-                    title="Edit"
-                    class="site-text-primary"
-                  >
-                    <span class="fa fa-edit"></span>
-                  </a>
-                </div>
-                <p>
-                  Add links to your Online presentations (e.g. Slideshare presentation links etc.).
-                </p>
-              </div>
-              <!--Presentation Modal -->
-              <div class="modal fade twm-saved-jobs-view" id="Presentation_modal" tabindex="-1">
-                <div class="modal-dialog modal-dialog-centered">
-                  <div class="modal-content">
-                    <form>
-
-                      <div class="modal-header">
-                        <h2 class="modal-title">
-                          Presentation
-                        </h2>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                      </div>
-
-                      <div class="modal-body">
-
-                        <div class="row">
-                          <div class="col-xl-12 col-lg-12">
-                            <div class="form-group">
-                              <label>Social Profile</label>
-                              <div class="ls-inputicon-box">
-                                <input class="form-control" type="text" placeholder="Enter Social Profile Name" />
-                                <i class="fs-input-icon fa fa-address-card"></i>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-xl-12 col-lg-12">
-                            <div class="form-group">
-                              <label>URL</label>
-                              <div class="ls-inputicon-box">
-                                <input class="form-control" type="text" placeholder="Enter Url" />
-                                <i class="fs-input-icon fa fa-globe-americas"></i>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div class="col-md-12">
-                            <div class="form-group mb-0">
-                              <label>Description</label>
-                              <textarea class="form-control" rows="3" placeholder="Type Description"></textarea>
-                            </div>
-                          </div>
-
-                        </div>
-
-                      </div>
-
-                      <div class="modal-footer">
-
-                        <button type="button" class="site-button" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="site-button">Save</button>
-
-                      </div>
-
-                    </form>
-                  </div>
-                </div>
-              </div>
-
-              <div class="twm-list-wrap">
-                <div class="twm-list-inner d-flex justify-content-between">
-                  <b>Certification</b>
-                  <a
-                    data-bs-toggle="modal"
-                    href="#Certification_modal"
-                    role="button"
-                    title="Edit"
-                    class="site-text-primary"
-                  >
-                    <span class="fa fa-edit"></span>
-                  </a>
-                </div>
-                <p>
-                  Add details of Certification you have filed.
-                </p>
-              </div>
-              <!--Certification Modal -->
-              <div class="modal fade twm-saved-jobs-view" id="Certification_modal" tabindex="-1">
-                <div class="modal-dialog modal-dialog-centered">
-                  <div class="modal-content">
-                    <form>
-
-                      <div class="modal-header">
-                        <h2 class="modal-title">
-                          Certification
-                        </h2>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                      </div>
-
-                      <div class="modal-body">
-
-                        <div class="row">
-                          <div class="col-xl-12 col-lg-12">
-                            <div class="form-group">
-                              <label>Certification Name</label>
-                              <div class="ls-inputicon-box">
-                                <input class="form-control" type="text" placeholder="Enter Certification Name" />
-                                <i class="fs-input-icon fa fa-address-card"></i>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-xl-12 col-lg-12">
-                            <div class="form-group">
-                              <label>Certification Body</label>
-                              <div class="ls-inputicon-box">
-                                <input class="form-control" type="text" placeholder="Enter Certification Body" />
-                                <i class="fs-input-icon fa fa-address-card"></i>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div class="col-xl-12 col-lg-12">
-                            <div class="form-group mb-0">
-                              <label>Year Onlabel</label>
-                              <div class="ls-inputicon-box">
-                                <select class="wt-select-box selectpicker" data-live-search="true" title="" data-bv-field="size">
-                                  <option class="bs-title-option" value="">
-                                    Year
-                                  </option>
-                                  <option>
-                                    2021
-                                  </option>
-                                  <option>
-                                    2020
-                                  </option>
-                                  <option>
-                                    2019
-                                  </option>
-                                  <option>
-                                    2018
-                                  </option>
-                                  <option>
-                                    2017
-                                  </option>
-                                  <option>
-                                    2016
-                                  </option>
-                                  <option>
-                                    2015
-                                  </option>
-                                  <option>
-                                    2014
-                                  </option>
-                                  <option>
-                                    2013
-                                  </option>
-                                  <option>
-                                    2012
-                                  </option>
-                                  <option>
-                                    2011
-                                  </option>
-                                </select>
-                                <i class="fs-input-icon fa fa-calendar-alt"></i>
-                              </div>
-                            </div>
-                          </div>
-
-                        </div>
-
-                      </div>
-
-                      <div class="modal-footer">
-
-                        <button type="button" class="site-button" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="site-button">Save</button>
-
-                      </div>
-
-                    </form>
-                  </div>
-                </div>
-              </div>
-
-              <div class="twm-list-wrap">
-                <div class="twm-list-inner d-flex justify-content-between">
-                  <b>Patent</b>
-                  <a data-bs-toggle="modal" href="#Patent_modal" role="button" title="Edit" class="site-text-primary">
-                    <span class="fa fa-edit"></span>
-                  </a>
-                </div>
-                <p>
-                  Add details of Patents you have filed.
-                </p>
-              </div>
-              <!--Patent Modal -->
-              <div class="modal fade twm-saved-jobs-view" id="Patent_modal" tabindex="-1">
-                <div class="modal-dialog modal-dialog-centered">
-                  <div class="modal-content">
-                    <form>
-
-                      <div class="modal-header">
-                        <h2 class="modal-title">
-                          Patent
-                        </h2>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                      </div>
-
-                      <div class="modal-body">
-
-                        <div class="row">
-                          <div class="col-xl-12 col-lg-12">
-                            <div class="form-group">
-                              <label>Title</label>
-                              <div class="ls-inputicon-box">
-                                <input class="form-control" type="text" placeholder="Enter Title" />
-                                <i class="fs-input-icon fa fa-address-card"></i>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-xl-12 col-lg-12">
-                            <div class="form-group">
-                              <label>Url</label>
-                              <div class="ls-inputicon-box">
-                                <input class="form-control" type="text" placeholder="Enter Url " />
-                                <i class="fs-input-icon fa fa-globe-americas"></i>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div class="col-xl-12 col-lg-12">
-                            <div class="form-group">
-                              <label>Patent Office</label>
-                              <div class="ls-inputicon-box">
-                                <input class="form-control" type="text" placeholder="Enter Patent Office" />
-                                <i class="fs-input-icon fa fa-building"></i>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div class="col-xl-12 col-lg-12">
-                            <div class="form-group">
-                              <label>Application Number</label>
-                              <div class="ls-inputicon-box">
-                                <input class="form-control" type="text" placeholder="Enter Application Number" />
-                                <i class="fs-input-icon fa fa-dice-d6"></i>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div class="col-xl-12 col-lg-12">
-                            <div class="form-group">
-                              <label>Status</label>
-                              <div class="row twm-form-radio-inline">
-
-                                <div class="col-md-6">
-                                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="Patent_Issued" />
-                                  <label class="form-check-label" for="Patent_Issued">
-                                    Patent Issued
-                                                                        </label>
-                                </div>
-                                <div class="col-md-6">
-                                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="Patent_pending" checked />
-                                  <label class="form-check-label" for="Patent_pending">
-                                    Patent pending
-                                                                        </label>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <!--Start Date-->
-                          <div class="col-md-12">
-                            <div class="form-group">
-                              <label>Published On</label>
-                              <div class="ls-inputicon-box">
-                                <input
-                                  class="form-control datepicker"
-                                  data-provide="datepicker"
-                                  name="company_since"
-                                  type="text"
-                                  placeholder="mm/dd/yyyy"
-                                />
-                                <i class="fs-input-icon far fa-calendar"></i>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div class="col-md-12">
-                            <div class="form-group mb-0">
-                              <label>Description</label>
-                              <textarea class="form-control" rows="3" placeholder="Type Description"></textarea>
-                            </div>
-                          </div>
-
-                        </div>
-
-                      </div>
-
-                      <div class="modal-footer">
-
-                        <button type="button" class="site-button" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="site-button">Save</button>
-
-                      </div>
-
-                    </form>
-                  </div>
-                </div>
-              </div>
-
+          @endif
+          
+          <form
+            method="POST"
+            action="{{ route('resume.upload') }}"
+            enctype="multipart/form-data"
+            class="dropzone"
+            id="resumeDropzone"
+          >
+            {{ csrfField() }}
+            <div class="fallback">
+              <input name="resumeUrl" type="file" accept=".pdf" />
             </div>
-          </div>
-
+            <button type="submit" class="site-button">Envoyer</button>
+          </form>
+          <small>Télécharger le CV - La taille du fichier est de 3 Mo (PDF uniquement)</small>
         </div>
+      </div>
 
-        <!--Profile Summary-->
-        <div class="panel panel-default mb-3">
-          <div class="panel-heading wt-panel-heading p-a20 panel-heading-with-btn ">
-            <h4 class="panel-tittle m-a0">
-              Profile Summary
-            </h4>
-            <a
-              data-bs-toggle="modal"
-              href="#Profile_Summary"
-              role="button"
-              title="Edit"
-              class="site-text-primary"
-            >
-              <span class="fa fa-edit"></span>
-            </a>
-          </div>
-          <div class="panel-body wt-panel-body p-a20 ">
-            <div class="twm-panel-inner">
+      <!--Accomplishments-->
+      <div class="panel panel-default mb-3">
+        <div class="panel-heading wt-panel-heading p-a20 panel-heading-with-btn ">
+          <h4 class="panel-tittle m-a0">
+            Accomplishments
+          </h4>
+        </div>
+        <div class="panel-body wt-panel-body p-a20 ">
+          <div class="twm-panel-inner">
+            <div class="twm-list-wrap">
+              <div class="twm-list-inner d-flex justify-content-between">
+                <b>Online Profile</b>
+                <a
+                  data-bs-toggle="modal"
+                  href="#Online_Profile"
+                  role="button"
+                  title="Edit"
+                  class="site-text-primary"
+                >
+                  <span class="fa fa-edit"></span>
+                </a>
+              </div>
               <p>
-                Your Profile Summary should mention the highlights of your career and education, what your professional interests are, and what kind of a career you are looking for. Write a meaningful summary of more than 50 characters.
+                Add link to Online profiles (e.g. Linkedin, Facebook etc.).
               </p>
             </div>
-          </div>
-          <!--Modal Popup -->
-          <div class="modal fade twm-saved-jobs-view" id="Profile_Summary" tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered">
-              <div class="modal-content">
-                <form>
+            <!--Online Profile Modal -->
+            <div class="modal fade twm-saved-jobs-view" id="Online_Profile" tabindex="-1">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <form>
 
-                  <div class="modal-header">
-                    <h2 class="modal-title">
-                      Profile Summary
-                    </h2>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-
-                  <div class="modal-body">
-                    <p>
-                      Your Profile Summary should mention the highlights of your career and education, what your professional interests are, and what kind of a career you are looking for. Write a meaningful summary of more than 50 characters.
-                    </p>
-
-                    <div class="row">
-                      <div class="col-lg-12 col-md-12">
-                        <div class="form-group twm-textarea-full">
-                          <textarea class="form-control" placeholder="Detail of Project"></textarea>
-                        </div>
-                      </div>
+                    <div class="modal-header">
+                      <h2 class="modal-title">
+                        Online Profiles
+                      </h2>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 
-                  </div>
+                    <div class="modal-body">
 
-                  <div class="modal-footer">
+                      <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                          <div class="form-group">
+                            <label>Social Profile</label>
+                            <div class="ls-inputicon-box">
+                              <input class="form-control" type="text" placeholder="Enter Social Profile Name" />
+                              <i class="fs-input-icon fa fa-address-card"></i>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-12">
+                          <div class="form-group">
+                            <label>URL</label>
+                            <div class="ls-inputicon-box">
+                              <input class="form-control" type="text" placeholder="Enter Url" />
+                              <i class="fs-input-icon fa fa-globe-americas"></i>
+                            </div>
+                          </div>
+                        </div>
 
-                    <button type="button" class="site-button" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="site-button">Save</button>
+                        <div class="col-md-12">
+                          <div class="form-group mb-0">
+                            <label>Description</label>
+                            <textarea class="form-control" rows="3" placeholder="Type Description"></textarea>
+                          </div>
+                        </div>
 
-                  </div>
+                      </div>
 
-                </form>
+                    </div>
+
+                    <div class="modal-footer">
+
+                      <button type="button" class="site-button" data-bs-dismiss="modal">Close</button>
+                      <button type="button" class="site-button">Save</button>
+
+                    </div>
+
+                  </form>
+                </div>
               </div>
             </div>
+
+            <div class="twm-list-wrap">
+              <div class="twm-list-inner d-flex justify-content-between">
+                <b>Work Sample</b>
+                <a data-bs-toggle="modal" href="#Work_Sample" role="button" title="Edit" class="site-text-primary">
+                  <span class="fa fa-edit"></span>
+                </a>
+              </div>
+              <p>
+                Add link to your Projects (e.g. Github links etc.).
+              </p>
+            </div>
+            <!--Work Sample Modal -->
+            <div class="modal fade twm-saved-jobs-view" id="Work_Sample" tabindex="-1">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <form>
+
+                    <div class="modal-header">
+                      <h2 class="modal-title">
+                        Work Sample
+                      </h2>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+
+                      <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                          <div class="form-group">
+                            <label>Work Title</label>
+                            <div class="ls-inputicon-box">
+                              <input class="form-control" type="text" placeholder="Enter Work Title" />
+                              <i class="fs-input-icon fa fa-address-card"></i>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-12">
+                          <div class="form-group">
+                            <label>URL</label>
+                            <div class="ls-inputicon-box">
+                              <input class="form-control" type="text" placeholder="Enter Url" />
+                              <i class="fs-input-icon fa fa-globe-americas"></i>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!--Start Date-->
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label>Duration From</label>
+                            <div class="ls-inputicon-box">
+                              <input
+                                class="form-control datepicker"
+                                data-provide="datepicker"
+                                name="company_since"
+                                type="text"
+                                placeholder="mm/dd/yyyy"
+                              />
+                              <i class="fs-input-icon far fa-calendar"></i>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!--End Date-->
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label>Duration to</label>
+                            <div class="ls-inputicon-box">
+                              <input
+                                class="form-control datepicker"
+                                data-provide="datepicker"
+                                name="company_since"
+                                type="text"
+                                placeholder="mm/dd/yyyy"
+                              />
+                              <i class="fs-input-icon far fa-calendar"></i>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-xl-12 col-lg-12">
+                          <div class="form-group">
+                            <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="Working_on" checked />
+                            <label class="form-check-label" for="Working_on">
+                              I am currently working on this
+                                                                </label>
+                          </div>
+                        </div>
+
+                        <div class="col-md-12">
+                          <div class="form-group mb-0">
+                            <label>Description</label>
+                            <textarea class="form-control" rows="3" placeholder="Type Description"></textarea>
+                          </div>
+                        </div>
+
+                      </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+
+                      <button type="button" class="site-button" data-bs-dismiss="modal">Close</button>
+                      <button type="button" class="site-button">Save</button>
+
+                    </div>
+
+                  </form>
+                </div>
+              </div>
+            </div>
+
+            <div class="twm-list-wrap">
+              <div class="twm-list-inner d-flex justify-content-between">
+                <b>White Paper / Research Publication / Journal Entry</b>
+                <a
+                  data-bs-toggle="modal"
+                  href="#Research_Publication"
+                  role="button"
+                  title="Edit"
+                  class="site-text-primary"
+                >
+                  <span class="fa fa-edit"></span>
+                </a>
+              </div>
+              <p>
+                Add links to your Online publications.
+              </p>
+            </div>
+            <!--White Paper / Research Publication / Journal Entry Modal -->
+            <div class="modal fade twm-saved-jobs-view" id="Research_Publication" tabindex="-1">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <form>
+
+                    <div class="modal-header">
+                      <h2 class="modal-title">
+                        White Paper / Research Publication / Journal Entry
+                      </h2>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+
+                      <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                          <div class="form-group">
+                            <label>Title</label>
+                            <div class="ls-inputicon-box">
+                              <input class="form-control" type="text" placeholder="Title" />
+                              <i class="fs-input-icon fa fa-address-card"></i>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-12">
+                          <div class="form-group">
+                            <label>URL</label>
+                            <div class="ls-inputicon-box">
+                              <input class="form-control" type="text" placeholder="Enter Url" />
+                              <i class="fs-input-icon fa fa-globe-americas"></i>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!--Start Date-->
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <label>Published On</label>
+                            <div class="ls-inputicon-box">
+                              <input
+                                class="form-control datepicker"
+                                data-provide="datepicker"
+                                name="company_since"
+                                type="text"
+                                placeholder="mm/dd/yyyy"
+                              />
+                              <i class="fs-input-icon far fa-calendar"></i>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-md-12">
+                          <div class="form-group mb-0">
+                            <label>Description</label>
+                            <textarea class="form-control" rows="3" placeholder="Type Description"></textarea>
+                          </div>
+                        </div>
+
+                      </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+
+                      <button type="button" class="site-button" data-bs-dismiss="modal">Close</button>
+                      <button type="button" class="site-button">Save</button>
+
+                    </div>
+
+                  </form>
+                </div>
+              </div>
+            </div>
+
+            <div class="twm-list-wrap">
+              <div class="twm-list-inner d-flex justify-content-between">
+                <b>Presentation</b>
+                <a
+                  data-bs-toggle="modal"
+                  href="#Presentation_modal"
+                  role="button"
+                  title="Edit"
+                  class="site-text-primary"
+                >
+                  <span class="fa fa-edit"></span>
+                </a>
+              </div>
+              <p>
+                Add links to your Online presentations (e.g. Slideshare presentation links etc.).
+              </p>
+            </div>
+            <!--Presentation Modal -->
+            <div class="modal fade twm-saved-jobs-view" id="Presentation_modal" tabindex="-1">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <form>
+
+                    <div class="modal-header">
+                      <h2 class="modal-title">
+                        Presentation
+                      </h2>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+
+                      <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                          <div class="form-group">
+                            <label>Social Profile</label>
+                            <div class="ls-inputicon-box">
+                              <input class="form-control" type="text" placeholder="Enter Social Profile Name" />
+                              <i class="fs-input-icon fa fa-address-card"></i>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-12">
+                          <div class="form-group">
+                            <label>URL</label>
+                            <div class="ls-inputicon-box">
+                              <input class="form-control" type="text" placeholder="Enter Url" />
+                              <i class="fs-input-icon fa fa-globe-americas"></i>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-md-12">
+                          <div class="form-group mb-0">
+                            <label>Description</label>
+                            <textarea class="form-control" rows="3" placeholder="Type Description"></textarea>
+                          </div>
+                        </div>
+
+                      </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+
+                      <button type="button" class="site-button" data-bs-dismiss="modal">Close</button>
+                      <button type="button" class="site-button">Save</button>
+
+                    </div>
+
+                  </form>
+                </div>
+              </div>
+            </div>
+
+            <div class="twm-list-wrap">
+              <div class="twm-list-inner d-flex justify-content-between">
+                <b>Certification</b>
+                <a
+                  data-bs-toggle="modal"
+                  href="#Certification_modal"
+                  role="button"
+                  title="Edit"
+                  class="site-text-primary"
+                >
+                  <span class="fa fa-edit"></span>
+                </a>
+              </div>
+              <p>
+                Add details of Certification you have filed.
+              </p>
+            </div>
+            <!--Certification Modal -->
+            <div class="modal fade twm-saved-jobs-view" id="Certification_modal" tabindex="-1">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <form>
+
+                    <div class="modal-header">
+                      <h2 class="modal-title">
+                        Certification
+                      </h2>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+
+                      <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                          <div class="form-group">
+                            <label>Certification Name</label>
+                            <div class="ls-inputicon-box">
+                              <input class="form-control" type="text" placeholder="Enter Certification Name" />
+                              <i class="fs-input-icon fa fa-address-card"></i>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-12">
+                          <div class="form-group">
+                            <label>Certification Body</label>
+                            <div class="ls-inputicon-box">
+                              <input class="form-control" type="text" placeholder="Enter Certification Body" />
+                              <i class="fs-input-icon fa fa-address-card"></i>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-xl-12 col-lg-12">
+                          <div class="form-group mb-0">
+                            <label>Year Onlabel</label>
+                            <div class="ls-inputicon-box">
+                              <select class="wt-select-box selectpicker" data-live-search="true" title="" data-bv-field="size">
+                                <option class="bs-title-option" value="">
+                                  Year
+                                </option>
+                                <option>
+                                  2021
+                                </option>
+                                <option>
+                                  2020
+                                </option>
+                                <option>
+                                  2019
+                                </option>
+                                <option>
+                                  2018
+                                </option>
+                                <option>
+                                  2017
+                                </option>
+                                <option>
+                                  2016
+                                </option>
+                                <option>
+                                  2015
+                                </option>
+                                <option>
+                                  2014
+                                </option>
+                                <option>
+                                  2013
+                                </option>
+                                <option>
+                                  2012
+                                </option>
+                                <option>
+                                  2011
+                                </option>
+                              </select>
+                              <i class="fs-input-icon fa fa-calendar-alt"></i>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+
+                      <button type="button" class="site-button" data-bs-dismiss="modal">Close</button>
+                      <button type="button" class="site-button">Save</button>
+
+                    </div>
+
+                  </form>
+                </div>
+              </div>
+            </div>
+
+            <div class="twm-list-wrap">
+              <div class="twm-list-inner d-flex justify-content-between">
+                <b>Patent</b>
+                <a data-bs-toggle="modal" href="#Patent_modal" role="button" title="Edit" class="site-text-primary">
+                  <span class="fa fa-edit"></span>
+                </a>
+              </div>
+              <p>
+                Add details of Patents you have filed.
+              </p>
+            </div>
+            <!--Patent Modal -->
+            <div class="modal fade twm-saved-jobs-view" id="Patent_modal" tabindex="-1">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <form>
+
+                    <div class="modal-header">
+                      <h2 class="modal-title">
+                        Patent
+                      </h2>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+
+                      <div class="row">
+                        <div class="col-xl-12 col-lg-12">
+                          <div class="form-group">
+                            <label>Title</label>
+                            <div class="ls-inputicon-box">
+                              <input class="form-control" type="text" placeholder="Enter Title" />
+                              <i class="fs-input-icon fa fa-address-card"></i>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-12">
+                          <div class="form-group">
+                            <label>Url</label>
+                            <div class="ls-inputicon-box">
+                              <input class="form-control" type="text" placeholder="Enter Url " />
+                              <i class="fs-input-icon fa fa-globe-americas"></i>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-xl-12 col-lg-12">
+                          <div class="form-group">
+                            <label>Patent Office</label>
+                            <div class="ls-inputicon-box">
+                              <input class="form-control" type="text" placeholder="Enter Patent Office" />
+                              <i class="fs-input-icon fa fa-building"></i>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-xl-12 col-lg-12">
+                          <div class="form-group">
+                            <label>Application Number</label>
+                            <div class="ls-inputicon-box">
+                              <input class="form-control" type="text" placeholder="Enter Application Number" />
+                              <i class="fs-input-icon fa fa-dice-d6"></i>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-xl-12 col-lg-12">
+                          <div class="form-group">
+                            <label>Status</label>
+                            <div class="row twm-form-radio-inline">
+
+                              <div class="col-md-6">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="Patent_Issued" />
+                                <label class="form-check-label" for="Patent_Issued">
+                                  Patent Issued
+                                                                        </label>
+                              </div>
+                              <div class="col-md-6">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="Patent_pending" checked />
+                                <label class="form-check-label" for="Patent_pending">
+                                  Patent pending
+                                                                        </label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!--Start Date-->
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <label>Published On</label>
+                            <div class="ls-inputicon-box">
+                              <input
+                                class="form-control datepicker"
+                                data-provide="datepicker"
+                                name="company_since"
+                                type="text"
+                                placeholder="mm/dd/yyyy"
+                              />
+                              <i class="fs-input-icon far fa-calendar"></i>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-md-12">
+                          <div class="form-group mb-0">
+                            <label>Description</label>
+                            <textarea class="form-control" rows="3" placeholder="Type Description"></textarea>
+                          </div>
+                        </div>
+
+                      </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+
+                      <button type="button" class="site-button" data-bs-dismiss="modal">Close</button>
+                      <button type="button" class="site-button">Save</button>
+
+                    </div>
+
+                  </form>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
 
       </div>
+
+      <!--Profile Summary-->
+      <div class="panel panel-default mb-3">
+        <div class="panel-heading wt-panel-heading p-a20 panel-heading-with-btn ">
+          <h4 class="panel-tittle m-a0">
+            Résumé du profil
+          </h4>
+          <a
+            data-bs-toggle="modal"
+            href="#Profile_Summary"
+            role="button"
+            title="Edit"
+            class="site-text-primary"
+          >
+            <span class="fa fa-edit"></span>
+          </a>
+        </div>
+        <div class="panel-body wt-panel-body p-a20 ">
+          <div class="twm-panel-inner">
+            <p>
+              {{ candidate.summary || 'Aucun résumé' }}
+            </p>
+          </div>
+        </div>
+        <!--Modal Popup -->
+        <div class="modal fade twm-saved-jobs-view" id="Profile_Summary" tabindex="-1">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <form method="POST" action="{{ route('update') }}">
+                {{ csrfField() }}
+                <div class="modal-header">
+                  <h2 class="modal-title">
+                    Résumé du profil
+                  </h2>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                  <p>
+                    Votre résumé de profil doit mentionner les points forts de votre carrière et de votre formation, vos intérêts professionnels et le type de carrière que vous recherchez. Rédigez un résumé pertinent de plus de 50 caractères.
+                  </p>
+
+                  <div class="row">
+                    <div class="col-lg-12 col-md-12">
+                      <div class="form-group twm-textarea-full">
+                        <textarea class="form-control" name="summary" placeholder="Detail of Project"></textarea>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+                <div class="modal-footer">
+
+                  <button type="button" class="site-button" data-bs-dismiss="modal">Fermer</button>
+                  <button type="submit" class="site-button">Enregistrer</button>
+
+                </div>
+
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <button class="site-button" type="button" disabled=>Envoyer mon CV</button>
+      </div>
+
     </div>
-  @endslot
-@end
+  </div>
+
+  <script>
+    function updateSkillsCounter() {
+      const input = document.getElementById('skillsInput');
+      const counter = document.getElementById('skillsCounter');
+      const skills = input.value.split(',').filter(skill => skill.trim() !== '');
+      counter.textContent = `${skills.length} compétence(s) saisie(s)`;
+    }
+
+    document.getElementById('skillsForm').addEventListener('submit', function (event) {
+      const input = document.querySelector('input[name="skills"]');
+      const skillsArray = input.value.split(',').map(skill => skill.trim()).filter(skill => skill !== '');
+
+      console.log("Converted skills:", skillsArray); // Debug ici
+
+      input.value = JSON.stringify(skillsArray);
+    });
+  </script>
+@endslot
+@endcomponent
+
 

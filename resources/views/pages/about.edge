@@ -7,20 +7,7 @@
   
   @slot('main')
     {{-- Section Hero personnalisée --}}
-    <div class="section-full p-t120 p-b90 site-bg-gray">
-      <div class="container">
-        <div class="section-head center wt-small-separator-outer">
-          <div class="wt-small-separator site-text-primary">
-            <div>
-              À propos de nous
-            </div>
-          </div>
-          <h2>
-            Découvrez notre histoire
-          </h2>
-        </div>
-      </div>
-    </div>
+    @!component('components/common/breadcumb', {title : 'À propos de nous'})
 
     {{-- Section Contenu --}}
     <div class="section-full p-t120 p-b90 site-bg-white">

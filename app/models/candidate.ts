@@ -1,9 +1,13 @@
 // app/Models/Candidate.ts
 import { DateTime } from 'luxon'
-import { BaseModel, column, belongsTo } from '@adonisjs/lucid/orm'
-import type { BelongsTo } from '@adonisjs/lucid/types/relations'
+import { BaseModel, column, belongsTo, hasMany } from '@adonisjs/lucid/orm'
+import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations'
 
 import User from './user.js'
+import Skill from './skill.js'
+import Employment from './employment.js'
+import Education from './education.js'
+import ItSkill from './it_skill.js'
 
 export default class Candidate extends BaseModel {
   @column({ isPrimary: true })
@@ -26,6 +30,18 @@ export default class Candidate extends BaseModel {
   declare address: string
 
   @column()
+  declare poste: string
+
+  @column()
+  declare sex: string
+
+  @column()
+  declare status: string
+
+  @column()
+  declare summary: string
+
+  @column()
   declare photoUrl: string | null
 
   @column()
@@ -38,33 +54,17 @@ export default class Candidate extends BaseModel {
   declare resumeUrl: string | null
 
   // Tableaux typés
-  @column({
-    consume: (value) => value || [],
-    prepare: (value) => value || [],
-  })
-  declare skills: string[]
+  @hasMany(() => Skill)
+  declare skills: HasMany<typeof Skill>
 
-  @column({
-    consume: (value) => value || [],
-    prepare: (value) => value || [],
-  })
-  declare education: Array<{
-    nomComplexe: string
-    startFormation: string // ISO date
-    endFormation: string | null
-    certificat: string
-  }>
+  @hasMany(() => Employment)
+  declare employments: HasMany<typeof Employment>
 
-  @column({
-    consume: (value) => value || [],
-    prepare: (value) => value || [],
-  })
-  declare experience: Array<{
-    company: string
-    start: string // ISO date
-    end: string | null
-    description: string
-  }>
+  @hasMany(() => Education)
+  declare educations: HasMany<typeof Education>
+
+  @hasMany(() => ItSkill)
+  declare itSkills: HasMany<typeof ItSkill>
 
   @column({
     consume: (value) => value || [],
@@ -92,23 +92,4 @@ export default class Candidate extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
-
-  // Méthode pour ajouter une compétence
-  public async addSkill(skill: string) {
-    if (!this.skills.includes(skill)) {
-      this.skills = [...this.skills, skill]
-      await this.save()
-    }
-  }
-
-  // Méthode pour ajouter une expérience
-  public async addExperience(exp: {
-    company: string
-    start: string
-    end: string | null
-    description: string
-  }) {
-    this.experience = [...this.experience, exp]
-    await this.save()
-  }
 }

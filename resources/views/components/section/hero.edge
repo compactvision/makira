@@ -15,16 +15,16 @@
                     <div class="twm-bnr-title-large-bold">Dacon membres</div>
                     
                     <div class="twm-bnr-search-bar">
-                        <form action="{{ auth.user.admin === 'admin' ? "/about" : route('profile')}}">
+                        <form action="{{ auth.user.admin === 'admin' ? "/about" : route('resume')}}">
                             <div class="row">
                                 <!--Title-->
                                 <div class="form-group col-xl-8 col-lg-8 col-md-8">
                                     <label>Quoi</label>
                                     <div class="twm-single-iput">
                                         @if(auth.user.role === 'admin')
-                                            <input name="username" type="text" required class="form-control  bg-none" placeholder="Job title, Keywords, or company">
+                                            <input name="name" type="text" required class="form-control  bg-none" placeholder="Job title, Keywords, or company">
                                         @else
-                                            <input name="username" type="text" required class="form-control  bg-none" placeholder="Job title, Keywords, or company" disabled>
+                                            <input name="username" type="text" required class="form-control  bg-none" placeholder="Envoyer votre profile" disabled>
                                         @endif
                                     </div>
                                 </div>
