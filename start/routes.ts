@@ -29,7 +29,7 @@ router
     router.get('/about', [HomeController, 'about']).as('about')
     router.get('/profile', [HomeController, 'profile']).as('profile')
     router.get('/resume', [CandidatesController, 'resume']).as('resume')
-    router.post('/upload-resume', [CandidatesController, 'upload']).as('resume.upload')
+    // router.post('/upload-resume', [CandidatesController, 'upload']).as('resume.upload')
     router.post('/profile/update-field', [CandidatesController, 'update']).as('update')
     router.get('/contact', [HomeController, 'contact']).as('contact')
     router.post('/social-links/update', [SocialLinksController, 'update']).as('social-links.update')
@@ -46,6 +46,8 @@ router
     router
       .post('/desired-career/update', [CandidatesController, 'updateDesiredCareer'])
       .as('update.desired-career')
+
+    router.post('/send-cv', [CandidatesController, 'sendCv']).as('send-cv')
   })
   .use(middleware.auth())
 
@@ -56,6 +58,8 @@ router
     router.get('/candidat/:id', [AdminController, 'candidatShow']).as('candidat.show')
     router.get('/profile', [AdminController, 'profile']).as('dash.profile')
     router.get('/change-password', [AdminController, 'changePassword']).as('password')
+    // router.post('/update-password', [AdminController, 'updatePassword']).as('update.password')
+    router.delete('/candidat-delete/:id', [AdminController, 'delete']).as('candidat.delete')
   })
   .prefix('/dashboard')
   .use(middleware.checkUser())

@@ -14,17 +14,18 @@ export default class HomeController {
   }
 
   public async profile({ auth, view }: HttpContext) {
-    const user = await User.query()
-      .where('id', auth.user!.id)
-      .preload('candidate')
-      .preload('profile')
-      .firstOrFail()
+    const user = await User.query().where('id', auth.user!.id).firstOrFail()
+    await user.load('profile')
+    await user.load('candidate')
+    // const photo = user.profile?.photo
+    console.log('Test', user)
     const socialLinks = await SocialLink.query().where('user_id', auth.user!.id).first()
     return view.render('pages/profile/profile', {
       user: user,
       candidate: user.candidate,
-      profile: user.profile,
+      profile: user.profile || {},
       socialLinks: socialLinks || {},
+      photo: user.profile?.photo || null,
     })
   }
 

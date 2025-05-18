@@ -20,10 +20,12 @@ export default class AuthController {
     }
   }
 
-  public async register({ request, response, session }: HttpContext) {
+  public async register({ request, response, session, auth }: HttpContext) {
     try {
       const data = await request.validateUsing(createUserValidator)
       const user = await User.create(data)
+
+      const login = await auth.use('web').login(user)
 
       if (user) {
         await Candidate.create({

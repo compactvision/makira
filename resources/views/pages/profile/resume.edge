@@ -1,4 +1,4 @@
-@component('layouts/profile')
+@component('layouts/profile', { user })
   @slot('main')
     <div class="col-xl-9 col-lg-8 col-md-12 m-b30">
       <div class="twm-right-section-panel site-bg-gray">
@@ -22,7 +22,7 @@
           <div class="panel-body wt-panel-body p-a20 ">
             <div class="twm-panel-inner">
               <p>
-                {{ candidate.poste ?? 'Veuillez remplir votre poste actuel' }}
+                {{ profile.poste ?? 'Veuillez remplir votre poste actuel' }}
               </p>
             </div>
           </div>
@@ -48,7 +48,7 @@
                       <div class="col-lg-12 col-md-12">
                         <div class="form-group twm-textarea-full">
                           <textarea name="poste" class="form-control" placeholder="Ex: Développeur Full Stack chez Google">
-                            {{ candidate.poste || "Ex: Développeur Full Stack chez Google" }}
+                            {{ profile.poste || "Ex: Développeur Full Stack chez Google" }}
                           </textarea>
                         </div>
                       </div>
@@ -150,7 +150,7 @@
         <div class="panel panel-default mb-3">
           <div class="panel-heading wt-panel-heading p-a20 panel-heading-with-btn ">
             <h4 class="panel-tittle m-a0">
-              Employment
+              Experience
             </h4>
             <a data-bs-toggle="modal" href="#Employment" role="button" title="Edit" class="site-text-primary">
               <span class="fa fa-edit"></span>
@@ -167,7 +167,7 @@
                 {{ employment.company }}
               </p>
               <p>
-                {{ employment.start_date }} to {{ employment.end_date }}
+                De {{ employment.start_date }} à {{ employment.end_date }}
               </p>
               <p>
                 {{ employment.description }}
@@ -192,7 +192,7 @@
 
                   <div class="modal-header">
                     <h2 class="modal-title">
-                      Add Employment
+                      Ajouter Experience
                     </h2>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
@@ -202,37 +202,37 @@
                     <div class="row">
                       <div class="col-xl-12 col-lg-12">
                         <div class="form-group">
-                          <label>Your Designation</label>
+                          <label>Poste</label>
                           <div class="ls-inputicon-box">
-                            <input class="form-control" type="text" name="position" placeholder="Enter Your Designation" />
+                            <input class="form-control" type="text" name="position" placeholder="Poste" />
                             <i class="fs-input-icon fa fa-address-card"></i>
                           </div>
                         </div>
                       </div>
                       <div class="col-xl-12 col-lg-12">
                         <div class="form-group">
-                          <label>Your Organization</label>
+                          <label>Organisation</label>
                           <div class="ls-inputicon-box">
-                            <input class="form-control" type="text" name="company" placeholder="Enter Your Organization" />
+                            <input class="form-control" type="text" name="company" placeholder="Organisation" />
                             <i class="fs-input-icon fa fa-building"></i>
                           </div>
                         </div>
                       </div>
                       <div class="col-xl-12 col-lg-12">
                         <div class="form-group">
-                          <label>Is this your current company?</label>
+                          <label>Est-ce que vous y travaillez actuellement?</label>
                           <div class="row twm-form-radio-inline">
 
                             <div class="col-md-6">
                               <input class="form-check-input" type="radio" name="is_current" value="1" id="flexRadioDefault1" />
                               <label class="form-check-label" for="flexRadioDefault1">
-                                Yes
+                                Oui
                                                                 </label>
                             </div>
                             <div class="col-md-6">
                               <input class="form-check-input" type="radio" name="is_current" value="0" id="S_no" checked />
                               <label class="form-check-label" for="S_no">
-                                No
+                                Non
                                                                 </label>
                             </div>
                           </div>
@@ -242,7 +242,7 @@
                       <!--Start Date-->
                       <div class="col-md-6">
                         <div class="form-group">
-                          <label>Started Working From</label>
+                          <label>Commencé à travailler depuis</label>
                           <div class="ls-inputicon-box">
                             <input
                               class="form-control datepicker"
@@ -259,7 +259,7 @@
                       <!--End Date-->
                       <div class="col-md-6">
                         <div class="form-group">
-                          <label>Worked Till</label>
+                          <label>Fin du contrat</label>
                           <div class="ls-inputicon-box">
                             <input
                               class="form-control datepicker"
@@ -274,8 +274,8 @@
                       </div>
                       <div class="col-md-12">
                         <div class="form-group mb-0">
-                          <label>Describe your Job Profile</label>
-                          <textarea class="form-control" rows="3" name="description" placeholder="Describe your Job"></textarea>
+                          <label>Description du poste</label>
+                          <textarea class="form-control" rows="3" name="description" placeholder="Description du poste"></textarea>
                         </div>
                       </div>
 
@@ -285,8 +285,8 @@
 
                   <div class="modal-footer">
 
-                    <button type="button" class="site-button" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="site-button">Save</button>
+                    <button type="button" class="site-button" data-bs-dismiss="modal">Fermer</button>
+                    <button type="submit" class="site-button">Enregistrer</button>
 
                   </div>
 
@@ -311,9 +311,6 @@
             @if(candidate.educations && candidate.educations.length > 0)
             @each(education in candidate.educations)
             <div class="twm-panel-inner">
-              <p>
-                Mention your education details including your current and previous company work experience
-              </p>
               <p>
                 De {{ education.startDate }} à {{ education.endDate }}
               </p>
@@ -353,46 +350,46 @@
                     <div class="row">
                       <div class="col-xl-12 col-lg-12">
                         <div class="form-group">
-                          <label>Your school</label>
+                          <label>Etablissement</label>
                           <div class="ls-inputicon-box">
-                            <input class="form-control" type="text" name="school" placeholder="Enter Your School" />
+                            <input class="form-control" type="text" name="school" placeholder="Etablissement" />
                             <i class="fs-input-icon fa fa-address-card"></i>
                           </div>
                         </div>
                       </div>
                       <div class="col-xl-12 col-lg-12">
                         <div class="form-group">
-                          <label>Your degree</label>
+                          <label>Diplome</label>
                           <div class="ls-inputicon-box">
-                            <input class="form-control" type="text" name="degree" placeholder="Enter Your Degree" />
+                            <input class="form-control" type="text" name="degree" placeholder="Diplome" />
                             <i class="fs-input-icon fa fa-building"></i>
                           </div>
                         </div>
                       </div>
                       <div class="col-xl-12 col-lg-12">
                         <div class="form-group">
-                          <label>Your field of study</label>
+                          <label>Domaine d'étude</label>
                           <div class="ls-inputicon-box">
-                            <input class="form-control" type="text" name="field_of_study" placeholder="Enter Your Field of Study" />
+                            <input class="form-control" type="text" name="field_of_study" placeholder="Domaine d'étude" />
                             <i class="fs-input-icon fa fa-building"></i>
-                          </div>
+                        
                         </div>
                       </div>
                       <div class="col-xl-12 col-lg-12">
                         <div class="form-group">
-                          <label>Is this your current education?</label>
+                          <label>Est-ce votre education actuelle?</label>
                           <div class="row twm-form-radio-inline">
 
                             <div class="col-md-6">
                               <input class="form-check-input" type="radio" name="is_current" value="1" id="flexRadioDefault10" />
                               <label class="form-check-label" for="flexRadioDefault10">
-                                Yes
+                                Oui
                                                                 </label>
                             </div>
                             <div class="col-md-6">
                               <input class="form-check-input" type="radio" name="is_current" value="0" id="flexRadioDefault11" checked />
                               <label class="form-check-label" for="flexRadioDefault11">
-                                No
+                                Non
                                                                 </label>
                             </div>
                           </div>
@@ -402,7 +399,7 @@
                       <!--Start Date-->
                       <div class="col-md-6">
                         <div class="form-group">
-                          <label>Started Learning From</label>
+                          <label>Debut de l'etude</label>
                           <div class="ls-inputicon-box">
                             <input
                               class="form-control datepicker"
@@ -419,7 +416,7 @@
                       <!--End Date-->
                       <div class="col-md-6">
                         <div class="form-group">
-                          <label>Ended Learning From</label>
+                          <label>Fin de l'etude</label>
                           <div class="ls-inputicon-box">
                             <input
                               class="form-control datepicker"
@@ -434,8 +431,8 @@
                       </div>
                       <div class="col-md-12">
                         <div class="form-group mb-0">
-                          <label>Describe your Education</label>
-                          <textarea class="form-control" rows="3" name="description" placeholder="Describe your Education"></textarea>
+                          <label>Description de l'etude</label>
+                          <textarea class="form-control" rows="3" name="description" placeholder="Description de l'etude"></textarea>
                         </div>
                       </div>
 
@@ -445,8 +442,8 @@
 
                   <div class="modal-footer">
 
-                    <button type="button" class="site-button" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="site-button">Save</button>
+                    <button type="button" class="site-button" data-bs-dismiss="modal">Fermer</button>
+                    <button type="submit" class="site-button">Enregistrer</button>
 
                   </div>
 
@@ -461,7 +458,7 @@
         <div class="panel panel-default mb-3">
           <div class="panel-heading wt-panel-heading p-a20 panel-heading-with-btn ">
             <h4 class="panel-tittle m-a0">
-              IT Skills
+              Compétences informatiques
             </h4>
             <a data-bs-toggle="modal" href="#IT_skills" role="button" title="Edit" class="site-text-primary">
               <span class="fa fa-edit"></span>
@@ -469,21 +466,18 @@
           </div>
           <div class="panel-body wt-panel-body p-a20 ">
             <div class="twm-panel-inner">
-              <p>
-                Mention your employment detail including your current and previous company work experience
-              </p>
               <div class="table-responsive">
                 <table class="table twm-table table-striped table-borderless">
                   <thead>
                     <tr>
                       <th>
-                        Skills
+                        Compétence
                       </th>
                       <th>
-                        Version
+                        Niveau
                       </th>
                       <th>
-                        Last Used
+                        Dernière utilisation
                       </th>
                       <th>
                         Experience
@@ -520,7 +514,7 @@
                     @if(candidate.itSkills.length === 0)
                     <tr>
                       <td colspan="5">
-                        No IT Skills
+                        Aucune compétence
                       </td>
                     </tr>
                     @endif
@@ -540,7 +534,7 @@
 
                   <div class="modal-header">
                     <h2 class="modal-title">
-                      IT Skills
+                      Compétences informatiques
                     </h2>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
@@ -550,9 +544,9 @@
                     <div class="row">
                       <div class="col-xl-12 col-lg-12">
                         <div class="form-group">
-                          <label>IT Skills Name</label>
+                          <label>Compétence</label>
                           <div class="ls-inputicon-box">
-                            <input class="form-control" name="name" type="text" placeholder="Enter IT Skills" />
+                            <input class="form-control" name="name" type="text" placeholder="Compétence" />
                             <i class="fs-input-icon fa fa-address-card"></i>
                           </div>
                         </div>
@@ -560,9 +554,9 @@
 
                       <div class="col-xl-6 col-lg-12 col-md-12">
                         <div class="form-group">
-                          <label>Level</label>
+                          <label>Niveau</label>
                           <div class="ls-inputicon-box">
-                            <input class="form-control" name="level" type="text" placeholder="Enter Version" />
+                            <input class="form-control" name="level" type="text" placeholder="Niveau" />
                             <i class="fs-input-icon fa fa-info"></i>
                           </div>
                         </div>
@@ -570,11 +564,11 @@
 
                       <div class="col-xl-6 col-lg-12 col-md-12">
                         <div class="form-group">
-                          <label>Last Used</label>
+                          <label>Dernière utilisation</label>
                           <div class="ls-inputicon-box">
                             <select class="wt-select-box selectpicker" name="lastUsed" data-live-search="true" title="" data-bv-field="size">
                               <option class="bs-title-option" value="">
-                                Select Category
+                                Selectionner
                               </option>
                               <option value="2025">
                                 2025
@@ -636,7 +630,7 @@
                           <div class="ls-inputicon-box">
                             <select class="wt-select-box selectpicker" name="startDateYear" data-live-search="true" title="" data-bv-field="size">
                               <option class="bs-title-option" value="">
-                                Select Category
+                                Selectionner
                               </option>
                               <option value="2025">
                                 2025
@@ -754,47 +748,47 @@
 
                       <div class="col-xl-6 col-lg-12 col-md-12">
                         <div class="form-group">
-                          <label>Month</label>
+                          <label>Mois</label>
                           <div class="ls-inputicon-box">
                             <select class="wt-select-box selectpicker" name="startDateMonth" data-live-search="true" title="" data-bv-field="size">
                               <option class="bs-title-option" value="">
-                                Select Category
+                                Selectionner
                               </option>
                               <option value="January">
-                                January
+                                Janvier
                               </option>
                               <option value="February">
-                                February
+                                Février
                               </option>
                               <option value="March">
-                                March
+                                Mars
                               </option>
                               <option value="April">
-                                April
+                                Avril
                               </option>
                               <option value="May">
-                                May
+                                Mai
                               </option>
                               <option value="June">
-                                June
+                                Juin
                               </option>
                               <option value="July">
-                                July
+                                Juillet
                               </option>
                               <option value="August">
-                                August
+                                Août
                               </option>
                               <option value="September">
-                                September
+                                Septembre
                               </option>
                               <option value="October">
-                                October
+                                Octobre
                               </option>
                               <option value="November">
-                                November
+                                Novembre
                               </option>
                               <option value="December">
-                                December
+                                Décembre
                               </option>
                             </select>
                             <i class="fs-input-icon fa fa-user-edit"></i>
@@ -808,8 +802,8 @@
 
                   <div class="modal-footer">
 
-                    <button type="button" class="site-button" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="site-button">Save</button>
+                    <button type="button" class="site-button" data-bs-dismiss="modal">Fermer</button>
+                    <button type="submit" class="site-button">Enregistrer</button>
 
                   </div>
 
@@ -980,7 +974,7 @@
         </div>  --}}
 
         <!--Desired Career Profile-->
-        <div class="panel panel-default mb-3">
+        {{--  <div class="panel panel-default mb-3">
           <div class="panel-heading wt-panel-heading p-a20 panel-heading-with-btn ">
             <h4 class="panel-tittle m-a0">
               Desired Career Profile
@@ -1466,7 +1460,7 @@
             </div>
           </div>
 
-        </div>
+        </div>  --}}
 
         <!--Personal Details-->
         <div class="panel panel-default mb-3">
@@ -1494,7 +1488,7 @@
                       <div class="twm-title">
                         Nom
                       </div>
-                      <span class="twm-s-info-discription">{{ candidate.nom || 'N/A' }}</span>
+                      <span class="twm-s-info-discription">{{ profile.name || 'N/A' }}</span>
                     </div>
                   </div>
 
@@ -1503,7 +1497,7 @@
                       <div class="twm-title">
                         Prénom
                       </div>
-                      <span class="twm-s-info-discription">{{ candidate.prenom || 'N/A' }}</span>
+                      <span class="twm-s-info-discription">{{ profile.name || 'N/A' }}</span>
                     </div>
                   </div>
                 </div>
@@ -1513,7 +1507,11 @@
                     <div class="twm-title">
                       Date de naissance
                     </div>
-                    <span class="twm-s-info-discription">{{ candidate.birthDate?.toFormat('dd-MM-yyyy') || 'N/A' }}</span>
+                    <span class="twm-s-info-discription">
+                      {{ profile.birthDate 
+                         ? new Date(profile.birthDate).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' }) 
+                         : 'N/A' }}
+                    </span>
                   </div>
                 </div>
 
@@ -1522,7 +1520,7 @@
                     <div class="twm-title">
                       Adresse
                     </div>
-                    <span class="twm-s-info-discription">{{ candidate.address || 'N/A' }}</span>
+                    <span class="twm-s-info-discription">{{ profile.address || 'N/A' }}</span>
                   </div>
                 </div>
 
@@ -1531,7 +1529,7 @@
                     <div class="twm-title">
                       Sexe
                     </div>
-                    <span class="twm-s-info-discription">{{ candidate.sex || 'N/A' }}</span>
+                    <span class="twm-s-info-discription">{{ profile.sex || 'N/A' }}</span>
                   </div>
                 </div>
 
@@ -1540,7 +1538,7 @@
                     <div class="twm-title">
                       Statut matrimonial
                     </div>
-                    <span class="twm-s-info-discription">{{ candidate.status || 'N/A' }}</span>
+                    <span class="twm-s-info-discription">{{ profile.status || 'N/A' }}</span>
                   </div>
                 </div>
 
@@ -1552,7 +1550,7 @@
           <div class="modal fade twm-saved-jobs-view" id="Personal_Details" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered">
               <div class="modal-content">
-                <form action="{{ route('update') }}" method="post">
+                <form action="{{ route('user-profile.update') }}" method="post" id="profileForm">
                   {{ csrfField() }}
                   <div class="modal-header">
                     <h2 class="modal-title">
@@ -1570,12 +1568,12 @@
                           <label>Date de naissance</label>
                           <div class="ls-inputicon-box">
                             <input
-                              class="form-control datepicker"
-                              data-provide="datepicker"
-                              name="birth_date"
-                              type="text"
+                              class="form-control"
+                              name="birthDate"
+                              type="date"
                               placeholder="Entrer votre date de naissance"
-                              value="{{ candidate.birthDate || 'mm/dd/yyyy' }}"
+                              value="{{ profile.birthDate || '' }}"
+                              
                             />
                             <i class="fs-input-icon far fa-calendar"></i>
                           </div>
@@ -1593,8 +1591,8 @@
                                 type="radio"
                                 name="sex"
                                 id="S_male"
-                                value="M"
-                                {{ candidate.sex === 'M' ? 'checked' : '' }}
+                                value="Homme"
+                                {{ profile.sex === 'Homme' ? 'checked' : '' }}
                               />
                               <label class="form-check-label" for="S_male">
                                 Homme
@@ -1606,8 +1604,8 @@
                                 type="radio"
                                 name="sex"
                                 id="S_female"
-                                value="F"
-                                {{ candidate.sex === 'F' ? 'checked' : '' }}
+                                value="Femme"
+                                {{ profile.sex === 'Femme' ? 'checked' : '' }}
                               />
                               <label class="form-check-label" for="S_female">
                                 Femme
@@ -1626,7 +1624,7 @@
                               name="address"
                               type="text"
                               placeholder="Entrer votre addresse permanante"
-                              value="{{ candidate.address || 'N/A' }}"
+                              value="{{ profile.address || 'N/A' }}"
                             />
                             <i class="fs-input-icon fa fa-map-marker-alt"></i>
                           </div>
@@ -1635,30 +1633,14 @@
 
                       <div class="col-xl-12 col-lg-12">
                         <div class="form-group">
-                          <label>Nom</label>
+                          <label>Nom complet</label>
                           <div class="ls-inputicon-box">
                             <input
                               class="form-control"
                               type="text"
-                              name="nom"
+                              name="name"
                               placeholder="Veuillez entrer votre nom"
-                              value="{{ candidate.nom || 'N/A' }}"
-                            />
-                            <i class="fs-input-icon fa fa-user"></i>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="col-xl-12 col-lg-12">
-                        <div class="form-group">
-                          <label>Prénom</label>
-                          <div class="ls-inputicon-box">
-                            <input
-                              class="form-control"
-                              type="text"
-                              name="prenom"
-                              placeholder="Veuillez entrer votre prenom"
-                              value="{{ candidate.prenom || 'N/A' }}"
+                              value="{{ profile.name || 'N/A' }}"
                             />
                             <i class="fs-input-icon fa fa-user"></i>
                           </div>
@@ -1676,13 +1658,13 @@
                               title=""
                               data-bv-field="size"
                             >
-                              <option class="bs-title-option" value="">
-                                Selectionner Statut
+                              <option class="bs-title-option" value="{{ profile.status || '' }}">
+                                {{ profile.status || 'Selectionner Statut' }}
                               </option>
-                              <option value="Marie" {{ candidate.status === 'Marie' ? 'selected' : '' }}>
+                              <option value="Marie" {{ profile.status === 'Marie' ? 'selected' : '' }}>
                                 Marié
                               </option>
-                              <option value="Celibataire" {{ candidate.status === 'Celibataire' ? 'selected' : '' }}>
+                              <option value="Celibataire" {{ profile.status === 'Celibataire' ? 'selected' : '' }}>
                                 célibataire
                               </option>
                             </select>
@@ -1700,7 +1682,7 @@
                               name="phone"
                               type="text"
                               placeholder="Enter Numéro de Téléphone"
-                              value="{{ candidate.phone || 'N/A' }}"
+                              value="{{ profile.phone || 'N/A' }}"
                             />
                             <i class="fs-input-icon fa fa-phone"></i>
                           </div>
@@ -1726,7 +1708,7 @@
         </div>
 
         <!--Attach Resume-->
-        <div class="twm-panel-inner">
+        {{--  <div class="twm-panel-inner">
           <p>
             Resume is the most important document recruiters look for.
           </p>
@@ -1754,11 +1736,11 @@
             <button type="submit" class="site-button">Envoyer</button>
           </form>
           <small>Télécharger le CV - La taille du fichier est de 3 Mo (PDF uniquement)</small>
-        </div>
+        </div>  --}}
       </div>
 
       <!--Accomplishments-->
-      <div class="panel panel-default mb-3">
+      {{--  <div class="panel panel-default mb-3">
         <div class="panel-heading wt-panel-heading p-a20 panel-heading-with-btn ">
           <h4 class="panel-tittle m-a0">
             Accomplishments
@@ -2365,7 +2347,7 @@
           </div>
         </div>
 
-      </div>
+      </div>  --}}
 
       <!--Profile Summary-->
       <div class="panel panel-default mb-3">
@@ -2431,9 +2413,10 @@
         </div>
       </div>
 
-      <div>
-        <button class="site-button" type="button" disabled=>Envoyer mon CV</button>
-      </div>
+      <form action="{{ route('send-cv') }}" method="POST">
+        {{ csrfField() }}
+        <button class="site-button" type="submit">{{ candidate.isActive ? 'Retirer mon CV' : 'Envoyer mon CV' }}</button>
+      </form>
 
     </div>
   </div>
@@ -2454,6 +2437,37 @@
 
       input.value = JSON.stringify(skillsArray);
     });
+
+    document.addEventListener("DOMContentLoaded", () => {
+          const form = document.querySelector("#profileForm");
+          if (form) {
+            form.addEventListener("submit", async event => {
+              event.preventDefault();
+              const formData = new FormData(form);
+              const csrfToken = form.querySelector("input[name=_csrf]").value;
+              try {
+                const response = await fetch("/user-profile/update", {
+                  method: "POST",
+                  headers: {
+                    "X-CSRF-TOKEN": csrfToken,
+                    Accept: "application/json"
+                  },
+                  body: formData
+                });
+                if (response.ok) {
+                  const result = await response.json();
+                  alert(result.message || "Profile updated successfully!");
+                } else {
+                  const error = await response.json();
+                  alert(error.message || "An error occurred while updating profile.");
+                }
+              } catch (error) {
+                console.error("Error:", error);
+                alert("Failed to update profile. Please try again later.");
+              }
+            });
+          }
+        });
   </script>
 @endslot
 @endcomponent

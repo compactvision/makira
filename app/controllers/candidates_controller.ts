@@ -8,6 +8,7 @@ import Employment from '#models/employment'
 import Education from '#models/education'
 import ItSkill from '#models/it_skill'
 import DesiredCareer from '#models/desired_career'
+import UserProfile from '#models/user_profile'
 
 export default class CandidatesController {
   public async resume({ auth, view, session }: HttpContext) {
@@ -27,8 +28,8 @@ export default class CandidatesController {
 
     return view.render('pages/profile/resume', {
       user: user,
-      candidate: candidate,
-      profile: profile,
+      candidate: candidate || {},
+      profile: profile || {},
     })
   }
 
@@ -51,7 +52,7 @@ export default class CandidatesController {
       }
 
       // Mise à jour ou création du candidat
-      const candidate = await Candidate.updateOrCreate({ userId: user.id }, fieldsToUpdate)
+      const candidate = await UserProfile.updateOrCreate({ userId: user.id }, fieldsToUpdate)
 
       // Mise à jour des compétences
       if (skills.length > 0) {
@@ -75,45 +76,45 @@ export default class CandidatesController {
     }
   }
 
-  public async upload({ auth, request, response }: HttpContext) {
-    const user = auth.user!
-    const candidate = await user.related('candidate').query().firstOrFail()
+  // public async upload({ auth, request, response }: HttpContext) {
+  //   const user = auth.user!
+  //   const candidate = await user.related('candidate').query().firstOrFail()
 
-    const resume = request.file('resume', {
-      size: '3mb',
-      extnames: ['pdf'],
-    })
+  //   const resume = request.file('resume', {
+  //     size: '3mb',
+  //     extnames: ['pdf'],
+  //   })
 
-    if (!resume) {
-      return response.badRequest('Aucun fichier uploadé')
-    }
+  //   if (!resume) {
+  //     return response.badRequest('Aucun fichier uploadé')
+  //   }
 
-    if (!resume.isValid) {
-      return response.badRequest(resume.errors)
-    }
+  //   if (!resume.isValid) {
+  //     return response.badRequest(resume.errors)
+  //   }
 
-    // Chemin de stockage
-    const uploadPath = app.makePath('uploads/resumes')
+  //   // Chemin de stockage
+  //   const uploadPath = app.makePath('uploads/resumes')
 
-    // Créer le dossier s'il n'existe pas
-    await fs.mkdir(uploadPath, { recursive: true })
+  //   // Créer le dossier s'il n'existe pas
+  //   await fs.mkdir(uploadPath, { recursive: true })
 
-    // Nom de fichier unique
-    const fileName = `${user.id}-${Date.now()}.${resume.extname}`
-    const fullPath = `${uploadPath}/${fileName}`
+  //   // Nom de fichier unique
+  //   const fileName = `${user.id}-${Date.now()}.${resume.extname}`
+  //   const fullPath = `${uploadPath}/${fileName}`
 
-    // Déplacer le fichier
-    await resume.move(uploadPath, {
-      name: fileName,
-      overwrite: true,
-    })
+  //   // Déplacer le fichier
+  //   await resume.move(uploadPath, {
+  //     name: fileName,
+  //     overwrite: true,
+  //   })
 
-    // Enregistrer le chemin relatif
-    candidate.resumeUrl = `resumes/${fileName}`
-    await candidate.save()
+  //   // Enregistrer le chemin relatif
+  //   candidate.resumeUrl = `resumes/${fileName}`
+  //   await candidate.save()
 
-    return response.redirect().back()
-  }
+  //   return response.redirect().back()
+  // }
 
   public async updateEmployment({ request, response, auth }: HttpContext) {
     const user = auth.user!
@@ -203,5 +204,17 @@ export default class CandidatesController {
         message: 'An error occurred while updating the desired career',
       })
     }
+  }
+
+  public async sendCv({ request, response, auth }: HttpContext) {
+    const user = auth.user!
+    const candidate = await Candidate.query().where('user_id', user.id).firstOrFail()
+
+    if (candidate) {
+      candidate.isActive = !candidate.isActive
+      await candidate.save()
+    }
+
+    return response.redirect().back()
   }
 }

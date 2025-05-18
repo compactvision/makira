@@ -1,9 +1,9 @@
-@component('layouts/main')
+@component('layouts/main', { candidat })
   @slot('main')
     <div class="section-full p-b90 bg-white">
       <div
         class="twm-candi-self-wrap-2 overlay-wraper"
-        style="background-image:url(images/candidates/candidate-bg2.jpg);"
+        style="background-image:url(/images/candidates/{{ candidat.user.profile.photo }});"
       >
         <div class="overlay-main site-bg-primary opacity-01">
         </div>
@@ -11,35 +11,28 @@
           <div class="twm-candi-self-info-2">
             <div class="twm-candi-self-top">
               <div class="twm-candi-fee">
-                $20 / Day
+                {{ candidat.user.profile.expectedSalary }}$/mois
               </div>
               <div class="twm-media">
-                <img src="images/candidates/pic-l1.jpg" alt="#" />
+                <img src="{{ '/images/candidates/' + candidat.user.profile.photo }}" alt="#" />
               </div>
               <div class="twm-mid-content">
 
                 <h4 class="twm-job-title">
-                  Wanda Montgomery
+                  {{ candidat.user.profile.name }}
                 </h4>
 
                 <p>
-                  Senior UI / UX Designer and Developer at Google INC
+                  {{ candidat.user.profile.poste }}
                 </p>
                 <p class="twm-candidate-address">
-                  <i class="feather-map-pin"></i>United States
+                  <i class="feather-map-pin"></i>{{ candidat.user.profile.country + '/ ' + candidat.user.profile.city }}
                 </p>
 
               </div>
             </div>
-            <div class="twm-ep-detail-tags">
-              <button class="de-info twm-bg-green">                <i class="fa fa-share-alt"></i>Share</button>
-              <button class="de-info twm-bg-brown">                <i class="fa fa-file-signature"></i>Shortlist</button>
-              <button class="de-info twm-bg-purple">                <i class="fa fa-exclamation-triangle"></i>Report</button>
-              <button class="de-info twm-bg-sky">                <i class="fa fa-save"></i>Save</button>
-            </div>
-            <div class="twm-candi-self-bottom">
-              <a href="contact.html" class="site-button">Contact Us</a>
-              <a href="files/pdf-sample.pdf" class="site-button secondry">Download CV</a>
+            <div class="twm-candi-self-bottom" style="display: flex; justify-content: center;">
+              <a href="tel:{{ candidat.user.profile.phone }}" class="site-button">Contactez {{ candidat.user.profile.name }}</a>
             </div>
           </div>
         </div>
@@ -56,7 +49,7 @@
 
                 <div class="twm-s-info-wrap mb-5">
                   <h4 class="section-head-small mb-4">
-                    Profile Info
+                    Informations candidat
                   </h4>
                   <div class="twm-s-info-4">
                     <div class="row">
@@ -64,9 +57,9 @@
                       <div class="col-md-6">
                         <div class="twm-s-info-inner">
                           <i class="fas fa-money-bill-wave"></i>
-                          <span class="twm-title">Offered Salary</span>
+                          <span class="twm-title">Salaire voulu</span>
                           <div class="twm-s-info-discription">
-                            $20 / Day
+                            {{ candidat.user.profile.expectedSalary }}$/mois
                           </div>
                         </div>
                       </div>
@@ -75,25 +68,25 @@
                           <i class="fas fa-clock"></i>
                           <span class="twm-title">Experience</span>
                           <div class="twm-s-info-discription">
-                            6 Year
+                            {{ candidat.user.profile.experience }}
                           </div>
                         </div>
                       </div>
                       <div class="col-md-6">
                         <div class="twm-s-info-inner">
                           <i class="fas fa-venus-mars"></i>
-                          <span class="twm-title">Gender</span>
+                          <span class="twm-title">Genre</span>
                           <div class="twm-s-info-discription">
-                            Male
+                            {{ candidat.user.profile.sex }}
                           </div>
                         </div>
                       </div>
                       <div class="col-md-6">
                         <div class="twm-s-info-inner">
                           <i class="fas fa-mobile-alt"></i>
-                          <span class="twm-title">Phone</span>
+                          <span class="twm-title">Téléphone</span>
                           <div class="twm-s-info-discription">
-                            +291  560 56456
+                            {{ candidat.user.profile.phone }}
                           </div>
                         </div>
                       </div>
@@ -102,8 +95,7 @@
                           <i class="fas fa-at"></i>
                           <span class="twm-title">Email</span>
                           <div class="twm-s-info-discription">
-                            thewebmaxdemo
-                            @gmail.com
+                            {{ candidat.user.profile.email }}
                           </div>
                         </div>
                       </div>
@@ -112,7 +104,7 @@
                           <i class="fas fa-book-reader"></i>
                           <span class="twm-title">Qualification</span>
                           <div class="twm-s-info-discription">
-                            MCA
+                            {{ candidat.user.profile.qualification }}
                           </div>
                         </div>
                       </div>
@@ -122,7 +114,7 @@
                           <i class="fas fa-map-marker-alt"></i>
                           <span class="twm-title">Address</span>
                           <div class="twm-s-info-discription">
-                            1363-1385 Sunset Blvd Angeles, CA 90026 ,USA
+                            {{ candidat.user.profile.address }}
                           </div>
                         </div>
                       </div>
@@ -133,125 +125,97 @@
                 </div>
 
                 <h4 class="twm-s-title m-t0">
-                  About Me
+                  À propos de {{ candidat.user.profile.name }}
                 </h4>
 
                 <p>
-                  Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?
+                  {{ candidat.user.profile.description }}
                 </p>
 
-                <p>
-                  At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi.
-                </p>
 
                 <div>
 
-                  <p>
-                    Professional Business Developer with more than four years of experience in the business development processes. Involved in product testing, management, and development of new business opportunities.
-                  </p>
-
                   <h4 class="twm-s-title">
-                    Personal Characteristics:
+                    Compétences linguistiques:
                   </h4>
 
                   <ul class="description-list-2">
                     <li>
                       <i class="feather-check"></i>
-                      I take constructive criticism well and I am comfortable voicing opinions.
-                    </li>
-                    <li>
-                      <i class="feather-check"></i>
-                      Available to work required shifts including weekends, evenings and holidays.
-                    </li>
-                    <li>
-                      <i class="feather-check"></i>
-                      Excellent customer service skills, communication skills, and a happy, smiling attitude are essential.
-                    </li>
-                    <li>
-                      <i class="feather-check"></i>
-                      I have great time management skills.
+                      {{ candidat.user.profile.language }}
                     </li>
                   </ul>
 
                 </div>
 
+                <div>
+
+                  <h4 class="twm-s-title">
+                    Compétences informatiques:
+                  </h4>
+
+                  <ul class="description-list-2">
+                    @each (skill in candidat.itSkills)
+                      <li>
+                        <i class="feather-check"></i>
+                        {{ skill.name }}
+                      </li>
+                    @endeach
+                    @if (candidat.itSkills.length === 0)
+                      <li>
+                        <i class="feather-check"></i>
+                        Aucune compétence
+                      </li>
+                    @endif
+                  </ul>
+
+                </div>
+
                 <h4 class="twm-s-title">
-                  Skills
+                  Compétences:
                 </h4>
 
                 <div class="tw-sidebar-tags-wrap">
                   <div class="tagcloud">
-                    <a href="javascript:void(0)">Finance</a>
-                    <a href="javascript:void(0)">Sales</a>
-                    <a href="javascript:void(0)">Part-time</a>
-                    <a href="javascript:void(0)">Administration</a>
-                    <a href="javascript:void(0)">Retail</a>
-                    <a href="javascript:void(0)">Engineering</a>
-                    <a href="javascript:void(0)">Developer</a>
-                    <a href="javascript:void(0)">Work from home</a>
-                    <a href="javascript:void(0)">IT Consulting</a>
-                    <a href="javascript:void(0)">Manufacturing</a>
+                    @each (skill in candidat.skills)
+                      <a href="javascript:void(0)">{{ skill.name }}</a>
+                    @endeach
+                    @if (candidat.skills.length === 0)
+                      <a href="javascript:void(0)">Aucune compétence</a>
+                    @endif
                   </div>
                 </div>
 
                 <h4 class="twm-s-title">
-                  Work Experience
+                  Expérience professionnelle
                 </h4>
                 <div class="twm-timing-list-wrap">
 
+                  @each (employment in candidat.employments)
                   <div class="twm-timing-list">
                     <div class="twm-time-list-date">
-                      2012 to 2016
+                      De {{ employment.start_date }} à {{ employment.end_date }}
                     </div>
                     <div class="twm-time-list-title">
-                      Bluetech, Inc
+                      {{ employment.company }}
                     </div>
                     <div class="twm-time-list-position">
-                      Senior PHP Developer
+                      {{ employment.position }}
                     </div>
                     <div class="twm-time-list-discription">
                       <p>
-                        One of the main areas that I work on with my clients is shedding these non-supportive beliefs and 
-                                            replacing them with beliefs that will help them to accomplish their desires.
+                        {{ employment.description }}
                       </p>
                     </div>
                   </div>
-
+                  @endeach
+                  @if (candidat.employments.length === 0)
                   <div class="twm-timing-list">
                     <div class="twm-time-list-date">
-                      2016 to 2020
-                    </div>
-                    <div class="twm-time-list-title">
-                      Amazon, Inc
-                    </div>
-                    <div class="twm-time-list-position">
-                      IT & Development
-                    </div>
-                    <div class="twm-time-list-discription">
-                      <p>
-                        One of the main areas that I work on with my clients is shedding these non-supportive beliefs and 
-                                            replacing them with beliefs that will help them to accomplish their desires.
-                      </p>
+                      Aucune expérience
                     </div>
                   </div>
-
-                  <div class="twm-timing-list">
-                    <div class="twm-time-list-date">
-                      2020 to 2023
-                    </div>
-                    <div class="twm-time-list-title">
-                      BGoogle, Inc
-                    </div>
-                    <div class="twm-time-list-position">
-                      Senior UI / UX Designer and Developer
-                    </div>
-                    <div class="twm-time-list-discription">
-                      <p>
-                        One of the main areas that I work on with my clients is shedding these non-supportive beliefs and 
-                                            replacing them with beliefs that will help them to accomplish their desires.
-                      </p>
-                    </div>
-                  </div>
+                  @endif
 
                 </div>
 
@@ -260,59 +224,31 @@
                 </h4>
                 <div class="twm-timing-list-wrap">
 
+                  @each (education in candidat.educations)
                   <div class="twm-timing-list">
                     <div class="twm-time-list-date">
-                      2004 to 2006
+                      De {{ education.startDate }} à {{ education.endDate }}
                     </div>
                     <div class="twm-time-list-title">
-                      BCA - Bachelor of Computer Applications
+                      {{ education.school }}
                     </div>
                     <div class="twm-time-list-position">
-                      International University
+                      {{ education.degree }}
                     </div>
                     <div class="twm-time-list-discription">
                       <p>
-                        One of the main areas that I work on with my clients is shedding these non-supportive beliefs and 
-                                            replacing them with beliefs that will help them to accomplish their desires.
+                        {{ education.description }}
                       </p>
                     </div>
                   </div>
-
+                  @endeach
+                  @if (candidat.educations.length === 0)
                   <div class="twm-timing-list">
                     <div class="twm-time-list-date">
-                      2006 to 2008
-                    </div>
-                    <div class="twm-time-list-title">
-                      MCA - Master of Computer Application
-                    </div>
-                    <div class="twm-time-list-position">
-                      Middle East Technical University
-                    </div>
-                    <div class="twm-time-list-discription">
-                      <p>
-                        One of the main areas that I work on with my clients is shedding these non-supportive beliefs and 
-                                            replacing them with beliefs that will help them to accomplish their desires.
-                      </p>
+                      Aucune education
                     </div>
                   </div>
-
-                  <div class="twm-timing-list">
-                    <div class="twm-time-list-date">
-                      2008 to 2011
-                    </div>
-                    <div class="twm-time-list-title">
-                      Design Communication Visual
-                    </div>
-                    <div class="twm-time-list-position">
-                      Design at Massachusetts Institute of Technology & Marketing
-                    </div>
-                    <div class="twm-time-list-discription">
-                      <p>
-                        One of the main areas that I work on with my clients is shedding these non-supportive beliefs and 
-                                            replacing them with beliefs that will help them to accomplish their desires.
-                      </p>
-                    </div>
-                  </div>
+                  @endif
 
                 </div>
 
@@ -320,20 +256,18 @@
 
               <div class="twm-s-map mb-5">
                 <h4 class="section-head-small mb-4">
-                  Location
+                  Localisation
                 </h4>
                 <div class="twm-s-map-iframe twm-s-map-iframe-2">
-                  <iframe
-                    height="270"
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3304.8534521658976!2d-118.2533646842856!3d34.073270780600225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c2c6fd9829c6f3%3A0x6ecd11bcf4b0c23a!2s1363%20Sunset%20Blvd%2C%20Los%20Angeles%2C%20CA%2090026%2C%20USA!5e0!3m2!1sen!2sin!4v1620815366832!5m2!1sen!2sin"
-                  >
-                  </iframe>
+                  <p><span style="font-weight: bold;">Adresse : </span> {{ candidat.user.profile.address }}</p>
+                  <p><span style="font-weight: bold;">Ville : </span> {{ candidat.user.profile.city }}</p>
+                  <p><span style="font-weight: bold;">Pays : </span> {{ candidat.user.profile.country }}</p>
                 </div>
               </div>
 
-              <div class="twm-s-contact-wrap mb-5">
+              <form class="twm-s-contact-wrap mb-5" action="mailto:{{ candidat.user.profile.email }}">
                 <h4 class="section-head-small mb-4">
-                  Contact us
+                  Contactez {{ candidat.user.profile.name }}
                 </h4>
                 <div class="twm-s-contact twm-s-contact-2">
                   <div class="row">
@@ -369,7 +303,7 @@
                   </div>
 
                 </div>
-              </div>
+              </form>
 
             </div>
 

@@ -62,14 +62,7 @@
 
                   <div class="twm-candidate-profile-pic">
 
-                    <img src="images/user-avtar/pic4.jpg" alt="" />
-                    <div class="upload-btn-wrapper">
-
-                      <div id="upload-image-grid">
-                      </div>
-                      <button class="site-button button-sm">Upload Photo</button>
-                      <input type="file" name="myfile" id="file-uploader" accept=".jpg, .jpeg, .png" />
-                    </div>
+                    <img src="{{ '/images/candidates/default.png' }}" alt="" />
 
                   </div>
                   <div class="twm-mid-content text-center">
@@ -88,15 +81,12 @@
                       <li class="{{ request.url() === '/dashboard' ? 'active' : '' }}">
                         <a href="{{ route('dashboard') }}">                          <i class="fa fa-tachometer-alt"></i>Dashboard</a>
                       </li>
-                      <li class="{{ request.url() === '/dashboard/profile' ? 'active' : '' }}">
-                        <a href="{{ route('dash.profile') }}">                          <i class="fa fa-user"></i>My Pfofile</a>
-                      </li>
                       <li class="{{ request.url() === '/dashboard/candidat' ? 'active' : '' }}">
                         <a href="{{ route('candidat')}}">                          <i class="fa-solid fa-users"></i>Candidats</a>
                       </li>
-                      <li class="{{ request.url() === '/dashboard/change-password' ? 'active' : '' }}">
+                      {{--  <li class="{{ request.url() === '/dashboard/change-password' ? 'active' : '' }}">
                         <a href="{{ route('password')}}">                          <i class="fa fa-fingerprint"></i>Change Passeord</a>
-                      </li>
+                      </li>  --}}
                       <br>
                       <li>
                         <form action="{{ route('logout') }}" method="POST">

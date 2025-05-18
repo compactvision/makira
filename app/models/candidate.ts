@@ -16,42 +16,8 @@ export default class Candidate extends BaseModel {
   @column()
   declare userId: number
 
-  // Informations personnelles
   @column()
-  declare nom: string
-
-  @column()
-  declare prenom: string
-
-  @column()
-  declare phone: string
-
-  @column()
-  declare address: string
-
-  @column()
-  declare poste: string
-
-  @column()
-  declare sex: string
-
-  @column()
-  declare status: string
-
-  @column()
-  declare summary: string
-
-  @column()
-  declare photoUrl: string | null
-
-  @column()
-  declare about: string | null
-
-  @column.date()
-  declare birthDate: DateTime | null
-
-  @column()
-  declare resumeUrl: string | null
+  declare isActive: boolean
 
   // Tableaux typés
   @hasMany(() => Skill)
@@ -65,24 +31,6 @@ export default class Candidate extends BaseModel {
 
   @hasMany(() => ItSkill)
   declare itSkills: HasMany<typeof ItSkill>
-
-  @column({
-    consume: (value) => value || [],
-    prepare: (value) => value || [],
-  })
-  declare languages: Array<{
-    nom: string
-    niveau: 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2' | 'natif'
-  }>
-
-  @column({
-    consume: (value) => value || [],
-    prepare: (value) => value || [],
-  })
-  declare socialLinks: Array<{
-    reseau: string
-    lien: string
-  }>
 
   @belongsTo(() => User)
   declare user: BelongsTo<typeof User>

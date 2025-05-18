@@ -36,13 +36,18 @@ export default class UserProfile extends BaseModel {
   declare experience: string
 
   @column()
-  declare currentSalary: string
+  declare currentSalary: number
 
   @column()
-  declare expectedSalary: string
+  declare expectedSalary: number
+  @column()
+  declare sex: string
 
   @column()
-  declare age: number
+  declare status: string
+
+  @column()
+  declare birthDate: DateTime
 
   @column()
   declare country: string
@@ -57,7 +62,16 @@ export default class UserProfile extends BaseModel {
   declare address: string
 
   @column()
+  declare skills: string
+
+  @column()
+  declare poste: string
+
+  @column()
   declare description: string
+
+  @column()
+  declare photo: string
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
