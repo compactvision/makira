@@ -1,74 +1,104 @@
-<div class="twm-home-10-banner-section twm-bne-10-skew" style="background-image: url(images/home-10/banner-bg/pic1.jpg);">
-    <div class="container">
-        <div class="row">
-            
-            <!--Left Section-->
-            <div class="col-xl-6 col-lg-6 col-md-12">
-                <div class="twm-bnr-left-section">
-                    <div class="small-qb-box">
-                        <span class="qb-1"></span>
-                        <span class="qb-2 zoom-in-out-box"></span>
-                        <span class="qb-3 zoom-in-out-box2"></span>
-                        <span class="qb-4"></span>
-                    </div>
-                    <div class="twm-bnr-title-large-thin">Makira</div>
-                    <div class="twm-bnr-title-large-bold">Data consultants Members</div>
-                    
-                    <div class="twm-bnr-search-bar">
-                        <form action="{{ auth.user.admin === 'admin' ? "/about" : route('resume')}}">
-                            <div class="row">
-                                <!--Title-->
-                                <div class="form-group col-xl-8 col-lg-8 col-md-8">
-                                    <label>Quoi</label>
-                                    <div class="twm-single-iput">
-                                        @if(auth.user.role === 'admin')
-                                            <input name="name" type="text" required class="form-control  bg-none" placeholder="Job title, Keywords, or company">
-                                        @else
-                                            <input name="username" type="text" required class="form-control  bg-none" placeholder="Envoyer votre profile" disabled>
-                                        @endif
-                                    </div>
-                                </div>
+<div
+  class="twm-home-10-banner-section twm-bne-10-skew"
+  style="background-image: url(images/home-10/banner-bg/pic1.jpg);"
+>
+  <div class="container">
+    @set('notif', flashMessages.get('notification'))
+    @if(notif)
+      <div class="alert alert-{{ notif.type === 'success' ? 'success' : 'danger' }} alert-dismissible fade show m-b20" role="alert">
+        {{ notif.message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    @endif
+    <div class="row">
 
-                                <!--Find job btn-->
-                                <div class="form-group col-xl-4 col-lg-4 col-md-4">
-                                    <button type="submit" class="site-button">{{ auth.user.role === 'admin' ? "Rechercher" : "Envoyer CV"}}</button>
-                                </div>
+      <!--Left Section-->
+      <div class="col-xl-6 col-lg-6 col-md-12">
+        <div class="twm-bnr-left-section">
+          <div class="small-qb-box">
+            <span class="qb-1"></span>
+            <span class="qb-2 zoom-in-out-box"></span>
+            <span class="qb-3 zoom-in-out-box2"></span>
+            <span class="qb-4"></span>
+          </div>
+          <div class="twm-bnr-title-large-thin">
+            Makira
+          </div>
+          <div class="twm-bnr-title-large-bold">
+            Data consultants Members
+          </div>
 
-                            </div>
-                        </form>
-                    </div>
-                    <div class="twm-bnr-popular-search">
-                        <span class="twm-title">Popular Searches</span>
-                        <a>Developer</a> ,
-                        <a>Designer</a> ,
-                        <a>Architect</a> ,
-                        <a>Engineer</a> ,
-                        <a>PHP</a> ,
-                        <a>Banking</a> ,
-                        <a>Ios</a> ,
+          <div class="twm-bnr-search-bar">
+            <form action="{{ auth.user.role === 'admin' ? route('admin.search') : route('resume') }}">
+              <div class="row">
+                <!--Title-->
+                <div class="form-group col-xl-8 col-lg-8 col-md-8">
+                  <label>Quoi</label>
+                  <div class="twm-single-iput">
+                    @if(auth.user.role === 'admin')
+                      <input
+                        name="name"
+                        type="text"
+                        required
+                        class="form-control  bg-none"
+                        placeholder="Job title, Keywords, or company"
+                      />
+                    @else
+                      <input
+                        name="username"
+                        type="text"
+                        required
+                        class="form-control  bg-none"
+                        placeholder="Envoyer votre profile"
+                        disabled
+                      />
+                    @endif
+                  </div>
+                </div>
+
+                <!--Find job btn-->
+                <div class="form-group col-xl-4 col-lg-4 col-md-4">
+                  <button type="submit" class="site-button">{{ auth.user.role === 'admin' ? "Rechercher" : "Envoyer CV" }}</button>
+                </div>
+
+              </div>
+            </form>
+          </div>
+          <div class="twm-bnr-popular-search">
+            <span class="twm-title">Popular Searches</span>
+            <a>Developer</a>,
+                        <a>Designer</a>,
+                        <a>Architect</a>,
+                        <a>Engineer</a>,
+                        <a>PHP</a>,
+                        <a>Banking</a>,
+                        <a>Ios</a>,
                         <a>Accountancy</a>...
-                    </div>
-                </div>
-            </div>
+          </div>
+        </div>
+      </div>
 
-            <!--right Section-->
-            <div class="col-xl-6 col-lg-6 col-md-12 twm-bnr-right-section">
-                <div class="twm-bnr-right-content">
+      <!--right Section-->
+      <div class="col-xl-6 col-lg-6 col-md-12 twm-bnr-right-section">
+        <div class="twm-bnr-right-content">
 
-                    <div class="bnr-media-wrap">
-                        <div class="bnr-media">
-                            <img src="images/home-10/banner-bg/right-pic1.jpg" alt="#">
-                            
-                        </div>
-                        <div class="semi-circle rotate-center-2"></div>
-                    </div>
-                    
-                </div>
+          <div class="bnr-media-wrap">
+            <div class="bnr-media">
+              <img src="images/home-10/banner-bg/right-pic1.jpg" alt="#" />
+
             </div>
+            <div class="semi-circle rotate-center-2">
+            </div>
+          </div>
 
         </div>
-        <div class="twm-bnr-bottom-section">
-            <div class="twm-browse-jobs">Search</div>
-        </div>
+      </div>
+
     </div>
+    <div class="twm-bnr-bottom-section">
+      <div class="twm-browse-jobs">
+        Search
+      </div>
+    </div>
+  </div>
 </div>

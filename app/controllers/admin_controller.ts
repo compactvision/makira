@@ -1,4 +1,5 @@
 import Candidate from '#models/candidate'
+import User from '#models/user'
 import type { HttpContext } from '@adonisjs/core/http'
 // import { rules, schema } from '@ioc:Adonis/Core/Validator'
 
@@ -131,5 +132,26 @@ export default class AdminController {
     }
 
     return response.redirect().back()
+  }
+  public async search({ request, response, session }: HttpContext) {
+    const name = request.input('name')
+
+    if (!name) {
+      session.flash('error', 'Veuillez entrer un nom à rechercher.')
+      return response.redirect().back()
+    }
+
+    const user = await User.query()
+      .where('name', 'like', `%${name}%`)
+      .whereNot('role', 'admin')
+      .preload('candidate')
+      .first()
+
+    if (!user || !user.candidate) {
+      session.flash('error', 'Aucun candidat de ce nom dans la bdd')
+      return response.redirect().back()
+    }
+
+    return response.redirect().toRoute('candidat.show', { id: user.candidate.id })
   }
 }

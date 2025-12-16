@@ -4,213 +4,289 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
-      {{ title || 'Accueil - Makira' }}
+      {{ title || 'Connexion - Makira' }}
     </title>
-
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+      
+      body {
+        font-family: 'Inter', sans-serif;
+      }
+      
+      .gradient-bg {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      }
+      
+      .glass-effect {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+      }
+      
+      .input-focus {
+        transition: all 0.3s ease;
+      }
+      
+      .input-focus:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      }
+      
+      .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        transition: all 0.3s ease;
+      }
+      
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+      }
+      
+      .floating-shapes {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        z-index: -1;
+      }
+      
+      .shape {
+        position: absolute;
+        opacity: 0.1;
+      }
+      
+      .shape-1 {
+        width: 300px;
+        height: 300px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 50%;
+        top: -150px;
+        right: -150px;
+        animation: float 15s infinite ease-in-out;
+      }
+      
+      .shape-2 {
+        width: 200px;
+        height: 200px;
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        border-radius: 50%;
+        bottom: -100px;
+        left: -100px;
+        animation: float 20s infinite ease-in-out;
+      }
+      
+      .shape-3 {
+        width: 150px;
+        height: 150px;
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        border-radius: 50%;
+        top: 50%;
+        left: -75px;
+        animation: float 25s infinite ease-in-out;
+      }
+      
+      @keyframes float {
+        0%, 100% {
+          transform: translateY(0) rotate(0deg);
+        }
+        50% {
+          transform: translateY(-20px) rotate(10deg);
+        }
+      }
+      
+      .slide-in {
+        animation: slideIn 0.5s ease-out;
+      }
+      
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      
+      .fade-in {
+        animation: fadeIn 0.8s ease-out;
+      }
+      
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+    </style>
   </head>
-  <body>
-    <div class="page-wraper">
+  <body class="gradient-bg min-h-screen flex items-center justify-center p-4">
+    <div class="floating-shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+    </div>
 
-      <div class="page-content">
-        <div class="section-full site-bg-white">
-
-          <div class="container-fluid">
-            <div class="row">
-              <div class="col-xl-8 col-lg-6 col-md-5 twm-log-reg-media-wrap">
-                <div class="twm-log-reg-media">
-                  <div class="twm-l-media">
-                    <img src="images/login-bg.png" alt="" />
+    <div class="w-full max-w-6xl mx-auto">
+      <div class="glass-effect rounded-3xl shadow-2xl overflow-hidden">
+        <div class="grid md:grid-cols-2">
+          <!-- Section gauche - Image -->
+          <div class="hidden md:flex items-center justify-center p-8 lg:p-12 bg-gradient-to-br from-indigo-500 to-purple-600 relative overflow-hidden">
+            <div class="absolute inset-0 bg-black opacity-20"></div>
+            <div class="relative z-10 text-center text-white">
+              <div class="mb-8 fade-in">
+                <img src="images/logo.png" alt="Makira" class="h-20 mx-auto mb-6">
+                <h1 class="text-3xl font-bold mb-4">Bienvenue sur Makira</h1>
+                <p class="text-lg opacity-90">Votre plateforme de gestion de carrière</p>
+              </div>
+              
+              <div class="space-y-6 mt-12 slide-in">
+                <div class="flex items-start space-x-4">
+                  <div class="bg-white bg-opacity-20 p-3 rounded-full">
+                    <i class="fas fa-shield-alt text-xl"></i>
+                  </div>
+                  <div class="text-left">
+                    <h3 class="font-semibold text-lg">Sécurité renforcée</h3>
+                    <p class="opacity-80">Vos données sont protégées avec le plus grand soin</p>
                   </div>
                 </div>
-              </div>
-              <div class="col-xl-4 col-lg-6 col-md-7">
-                <div class="twm-log-reg-form-wrap">
-                  <div class="twm-log-reg-logo-head">
-                    <a href="index.html">
-                      <img src="images/logo-dark.png" alt="" class="logo" />
-                    </a>
+                
+                <div class="flex items-start space-x-4">
+                  <div class="bg-white bg-opacity-20 p-3 rounded-full">
+                    <i class="fas fa-rocket text-xl"></i>
                   </div>
-
-                  <div class="twm-log-reg-inner">
-                    <div class="twm-log-reg-head">
-                      <div class="twm-log-reg-logo">
-                        <span class="log-reg-form-title">Se connecter</span>
-                      </div>
-                    </div>
-                    <div class="twm-tabs-style-2">
-
-                      <ul class="nav nav-tabs" id="myTab2" role="tablist">
-
-                        <!--Login Candidate-->
-                        {{--  <li class="nav-item">
-                          <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#twm-login-candidate" type="button">                            <i class="fas fa-user-tie"></i>Candidate</button>
-                        </li>
-                        --}}
-
-                      </ul>
-
-                      <div class="tab-content" id="myTab2Content">
-                        <!--Login Candidate Content-->
-                        <form
-                          class="tab-pane fade show active"
-                          id="twm-login-candidate"
-                          action="{{ route('login') }}"
-                          method="POST"
-                        >
-                          {{ csrfField() }}
-                          <div class="row">
-
-                            <div class="col-lg-12">
-                              <div class="form-group mb-3">
-                                <input name="email" type="email" required="" class="form-control" placeholder="Email*" />
-                              </div>
-                            </div>
-
-                            <div class="col-lg-12">
-                              <div class="form-group mb-3">
-                                <input name="password" type="password" class="form-control" required="" placeholder="Mot de passe*" />
-                              </div>
-                            </div>
-
-                            <div class="col-lg-12">
-                              <div class="twm-forgot-wrap">
-                                <div class="form-group mb-3">
-                                  <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="Password4" />
-                                    <label class="form-check-label rem-forgot" for="Password4">Se souvenir de moi <a href="javascript:;" class="site-text-primary">Mot de passe oublié</a></label>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-
-                            <div class="col-lg-12">
-                              <div class="twm-forgot-wrap">
-                                <div class="form-group mb-3">
-                                  <div class="form-check">
-                                    <label class="form-check-label rem-forgot" for="Password4">Pas de compte ?<a href="{{ route('registerShow') }}" class="site-text-primary">S'inscrire</a></label>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-
-                            <div class="col-md-12">
-                              <div class="form-group">
-                                <button type="submit" class="site-button">Se connecter</button>
-                              </div>
-                            </div>
-
-                            {{--  <div class="col-md-12">
-                              <div class="form-group">
-                                <span class="center-text-or">Or</span>
-                              </div>
-                            </div>
-                            
-                            <div class="col-md-12">
-                              <div class="form-group">
-                                <button type="submit" class="log_with_facebook">
-                                  <i class="fab fa-facebook"></i>
-                                  Continue with Facebook
-                                                        </button>
-                              </div>
-                            </div>  --}}
-
-                            {{--  <div class="col-md-12">
-                              <div class="form-group">
-                                <button type="submit" class="log_with_google">
-                                  <img src="images/google-icon.png" alt="" />
-                                  Continue with Google
-                                                        </button>
-                              </div>
-                            </div>  --}}
-
-                          </div>
-                        </form>
-
-                      </div>
-                    </div>
+                  <div class="text-left">
+                    <h3 class="font-semibold text-lg">Performance optimale</h3>
+                    <p class="opacity-80">Une expérience utilisateur rapide et fluide</p>
+                  </div>
+                </div>
+                
+                <div class="flex items-start space-x-4">
+                  <div class="bg-white bg-opacity-20 p-3 rounded-full">
+                    <i class="fas fa-headset text-xl"></i>
+                  </div>
+                  <div class="text-left">
+                    <h3 class="font-semibold text-lg">Support dédié</h3>
+                    <p class="opacity-80">Notre équipe est à votre disposition 24/7</p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+          
+          <!-- Section droite - Formulaire -->
+          <div class="p-8 lg:p-12">
+            <div class="max-w-md mx-auto">
+              <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">Connexion</h2>
+                <p class="text-gray-600">Accédez à votre espace personnel</p>
+              </div>
+              
+              <form action="{{ route('login') }}" method="POST" class="space-y-6">
+                {{ csrfField() }}
+                
+                <div class="slide-in">
+                  <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Adresse email</label>
+                  <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <i class="fas fa-envelope text-gray-400"></i>
+                    </div>
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      required
+                      class="input-focus w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none"
+                      placeholder="exemple@email.com"
+                      value="{{ old('email') || '' }}"
+                    />
+                  </div>
+                  @inputError('email')
+                    <p class="mt-1 text-sm text-red-600">{{ $messages.join(', ') }}</p>
+                  @end
+                  @if(flashMessages.has('errors.email'))
+                    <p class="mt-1 text-sm text-red-600">{{ flashMessages.get('errors.email') }}</p>
+                  @end
+                </div>
+                
+                <div class="slide-in" style="animation-delay: 0.1s">
+                  <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Mot de passe</label>
+                  <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <i class="fas fa-lock text-gray-400"></i>
+                    </div>
+                    <input
+                      id="password"
+                      name="password"
+                      type="password"
+                      required
+                      class="input-focus w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:outline-none"
+                      placeholder="••••••••"
+                    />
+                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                      <button type="button" id="toggle-password" class="text-gray-400 hover:text-gray-600 focus:outline-none">
+                        <i class="fas fa-eye" id="eye-icon"></i>
+                      </button>
+                    </div>
+                  </div>
+                  @inputError('password')
+                    <p class="mt-1 text-sm text-red-600">{{ $messages.join(', ') }}</p>
+                  @end
+                  @if(flashMessages.has('errors.password'))
+                    <p class="mt-1 text-sm text-red-600">{{ flashMessages.get('errors.password') }}</p>
+                  @end
+                </div>
+                
+                <div class="flex items-center justify-between slide-in" style="animation-delay: 0.2s">
+                  <div class="flex items-center">
+                    <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                    <label for="remember-me" class="ml-2 block text-sm text-gray-700">Se souvenir de moi</label>
+                  </div>
+                  <a href="#" class="text-sm text-indigo-600 hover:text-indigo-500">Mot de passe oublié?</a>
+                </div>
+                
+                <div class="slide-in" style="animation-delay: 0.3s">
+                  <button type="submit" class="btn-primary w-full py-3 px-4 text-white font-semibold rounded-lg focus:outline-none">
+                    Se connecter
+                  </button>
+                </div>
+                
+                <div class="text-center slide-in" style="animation-delay: 0.4s">
+                  <p class="text-sm text-gray-600">
+                    Pas de compte? 
+                    <a href="{{ route('registerShow') }}" class="font-medium text-indigo-600 hover:text-indigo-500 ml-1">S'inscrire</a>
+                  </p>
+                </div>
+              </form>
+              
+              
+            </div>
+          </div>
         </div>
       </div>
-
     </div>
 
-    {{-- Scripts JS --}}
-    <script src="{{ asset('js/jquery-3.6.0.min.js') }}">
-      
-    </script>
-    <script src="{{ asset('js/popper.min.js') }}">
-      
-    </script>
-    <script src="{{ asset('js/bootstrap.min.js') }}">
-      
-    </script>
-    <script src="{{ asset('js/magnific-popup.min.js') }}">
-      
-    </script>
-    <script src="{{ asset('js/waypoints.min.js') }}">
-      
-    </script>
-    <script src="{{ asset('js/counterup.min.js') }}">
-      
-    </script>
-    <script src="{{ asset('js/waypoints-sticky.min.js') }}">
-      
-    </script>
-    <script src="{{ asset('js/isotope.pkgd.min.js') }}">
-      
-    </script>
-    <script src="{{ asset('js/imagesloaded.pkgd.min.js') }}">
-      
-    </script>
-    <script src="{{ asset('js/owl.carousel.min.js') }}">
-      
-    </script>
-    <script src="{{ asset('js/theia-sticky-sidebar.js') }}">
-      
-    </script>
-    <script src="{{ asset('js/lc_lightbox.lite.js') }}">
-      
-    </script>
-    <script src="{{ asset('js/bootstrap-select.min.js') }}">
-      
-    </script>
-    <script src="{{ asset('js/dropzone.js') }}">
-      
-    </script>
-    <script src="{{ asset('js/jquery.scrollbar.js') }}">
-      
-    </script>
-    <script src="{{ asset('js/bootstrap-datepicker.js') }}">
-      
-    </script>
-    <script src="{{ asset('js/jquery.dataTables.min.js') }}">
-      
-    </script>
-    <script src="{{ asset('js/dataTables.bootstrap5.min.js') }}">
-      
-    </script>
-    <script src="{{ asset('js/chart.js') }}">
-      
-    </script>
-    <script src="{{ asset('js/anm.js') }}">
-      
-    </script>
-    <script src="{{ asset('js/bootstrap-slider.min.js') }}">
-      
-    </script>
-    <script src="{{ asset('js/swiper-bundle.min.js') }}">
-      
-    </script>
-    <script src="{{ asset('js/custom.js') }}">
-      
-    </script>
-    <script src="{{ asset('js/switcher.js') }}">
-      
+    <script>
+      // Toggle password visibility
+      document.getElementById('toggle-password').addEventListener('click', function() {
+        const passwordInput = document.getElementById('password');
+        const eyeIcon = document.getElementById('eye-icon');
+        
+        if (passwordInput.type === 'password') {
+          passwordInput.type = 'text';
+          eyeIcon.classList.remove('fa-eye');
+          eyeIcon.classList.add('fa-eye-slash');
+        } else {
+          passwordInput.type = 'password';
+          eyeIcon.classList.remove('fa-eye-slash');
+          eyeIcon.classList.add('fa-eye');
+        }
+      });
     </script>
   </body>
 </html>

@@ -60,6 +60,7 @@ router
     router.get('/change-password', [AdminController, 'changePassword']).as('password')
     // router.post('/update-password', [AdminController, 'updatePassword']).as('update.password')
     router.delete('/candidat-delete/:id', [AdminController, 'delete']).as('candidat.delete')
+    router.get('/search', [AdminController, 'search']).as('admin.search')
   })
   .prefix('/dashboard')
   .use(middleware.checkUser())

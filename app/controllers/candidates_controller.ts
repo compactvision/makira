@@ -33,7 +33,7 @@ export default class CandidatesController {
     })
   }
 
-  public async update({ request, response, auth }: HttpContext) {
+  public async update({ request, response, auth, session }: HttpContext) {
     const user = auth.user!
     const fieldsToUpdate = request.except(['_csrf', 'skills']) // Exclure les compétences pour un traitement séparé
 
@@ -67,12 +67,19 @@ export default class CandidatesController {
         await Skill.createMany(skillRecords)
       }
 
+      session.flash('notification', {
+        type: 'success',
+        message: 'Vos compétences et informations ont été mises à jour.',
+      })
+
       return response.redirect().back()
     } catch (error) {
       console.error('Error updating candidate or skills:', error)
-      return response.internalServerError({
-        message: 'An error occurred while updating the profile',
+      session.flash('notification', {
+        type: 'error',
+        message: 'Une erreur est survenue lors de la mise à jour.',
       })
+      return response.redirect().back()
     }
   }
 

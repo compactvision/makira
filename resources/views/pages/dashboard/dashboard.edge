@@ -112,7 +112,7 @@
                         <div class="twm-dash-candidates-list">
                           <div class="twm-media">
                             <div class="twm-media-pic">
-                              <img src="{{ '/images/candidates/'+candidat.user.profile.photo }}" alt="#" />
+                              <img src="{{ '/images/candidates/' + (candidat.user.profile?.photo ?? 'default.png') }}" alt="#" />
                             </div>
 
                           </div>
@@ -123,16 +123,16 @@
                               </h4>
                             </a>
                             <p>
-                              {{ candidat.user.profile.poste }}
+                              {{ candidat.user.profile?.poste ?? 'Poste non renseigné' }}
                             </p>
 
                             <div class="twm-fot-content">
                               <div class="twm-left-info">
                                 <p class="twm-candidate-address">
-                                  <i class="feather-map-pin"></i>{{ candidat.user.profile.city }}
+                                  <i class="feather-map-pin"></i>{{ candidat.user.profile?.city ?? 'Ville non renseignée' }}
                                 </p>
                                 <div class="twm-jobs-vacancies">
-                                  {{ candidat.user.profile.expectedSalary }}<span>$ "Salaire attendu"</span>
+                                  {{ candidat.user.profile?.expectedSalary ?? 0 }}<span>$ "Salaire attendu"</span>
                                 </div>
                               </div>
                               <div class="twm-right-btn">

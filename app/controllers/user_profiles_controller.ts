@@ -11,7 +11,7 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 export default class UserProfilesController {
-  public async update({ auth, request, response }: HttpContext) {
+  public async update({ auth, request, response, session }: HttpContext) {
     try {
       const user = auth.user
 
@@ -80,10 +80,19 @@ export default class UserProfilesController {
         data // Données à mettre à jour ou créer
       )
 
+      session.flash('notification', {
+        type: 'success',
+        message: 'Votre profil a été mis à jour avec succès.',
+      })
+
       return response.ok({ message: 'Profile updated successfully', userProfile })
     } catch (error) {
       console.error('Error updating user profile:', error)
-      return response.internalServerError({ message: 'An error occurred while updating profile.' })
+      session.flash('notification', {
+        type: 'error',
+        message: 'Une erreur est survenue lors de la mise à jour du profil.',
+      })
+      return response.internalServerError({ message: 'Error updating profile', error })
     }
   }
 }

@@ -3,7 +3,14 @@
     <div class="col-xl-9 col-lg-8 col-md-12 m-b30">
       <!--Filter Short By-->
       <div class="twm-right-section-panel site-bg-gray">
-        <form>
+        @if(flashMessages.has('notification'))
+          <div class="alert alert-{{ flashMessages.get('notification').type === 'success' ? 'success' : 'danger' }} alert-dismissible fade show m-b20" role="alert">
+             {{ flashMessages.get('notification').message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        @endif
+        <form action="{{ route('userProfile.update') }}" method="POST" enctype="multipart/form-data">
+          {{ csrfField() }}
 
           <!--Basic Information-->
           <div class="panel panel-default">

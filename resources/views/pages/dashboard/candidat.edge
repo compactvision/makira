@@ -39,30 +39,30 @@
                 <div class="twm-cv-manager-list-style1">
                   <div class="twm-media">
                     <div class="twm-media-pic">
-                      <img src="{{ '/images/candidates/' + candidat.user.profile.photo }}" alt="#" />
+                      <img src="{{ '/images/candidates/' + (candidat.user.profile?.photo ?? 'default.png') }}" alt="#" />
                     </div>
                   </div>
                   <div class="twm-mid-content">
                     <a href="{{ route('candidat.show', {id: candidat.id}) }}" class="twm-job-title">
                       <h4>
-                        {{ candidat.user.profile.name }}
+                        {{ candidat.user.profile?.name ?? candidat.user.name }}
                       </h4>
                     </a>
                     <p>
-                      {{ candidat.user.profile.poste }}
+                      {{ candidat.user.profile?.poste ?? 'Poste non renseigné' }}
                     </p>
 
                     <div class="twm-fot-content">
                       <div class="twm-left-info">
                         <p class="twm-candidate-address">
-                          <i class="feather-map-pin"></i>{{ candidat.user.profile.country + '/ ' + candidat.user.profile.city }}
+                          <i class="feather-map-pin"></i>{{ (candidat.user.profile?.country ?? '') + '/ ' + (candidat.user.profile?.city ?? '') }}
                         </p>
                         <div class="twm-candidates-tag">
-                          <span>{{ candidat.user.profile.jobCategory }}</span>
+                          <span>{{ candidat.user.profile?.jobCategory ?? 'Non classé' }}</span>
                         </div>
                       </div>
                       <div class="twm-view-button">
-                        <a href="tel:{{ candidat.user.profile.phone }}">                          <i class="fa fa-phone"></i></a>
+                        <a href="tel:{{ candidat.user.profile?.phone ?? '' }}">                          <i class="fa fa-phone"></i></a>
                         <a href="{{ route('candidat.show', {id: candidat.id}) }}" title="Show">                          <i class="fa fa-eye"></i></a>
                         <form action="{{ route('candidat.delete', { id: candidat.id }) }}" method="POST">
                           {{ csrfField() }}

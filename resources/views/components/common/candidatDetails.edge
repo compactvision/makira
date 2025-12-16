@@ -3,7 +3,7 @@
     <div class="section-full p-b90 bg-white">
       <div
         class="twm-candi-self-wrap-2 overlay-wraper"
-        style="background-image:url(/images/candidates/{{ candidat.user.profile.photo }});"
+        style="background-image:url(/images/candidates/{{ candidat.user.profile?.photo ?? 'default.png' }});"
       >
         <div class="overlay-main site-bg-primary opacity-01">
         </div>
@@ -11,28 +11,28 @@
           <div class="twm-candi-self-info-2">
             <div class="twm-candi-self-top">
               <div class="twm-candi-fee">
-                {{ candidat.user.profile.expectedSalary }}$/mois
+                {{ candidat.user.profile?.expectedSalary ?? 0 }}$/mois
               </div>
               <div class="twm-media">
-                <img src="{{ '/images/candidates/' + candidat.user.profile.photo }}" alt="#" />
+                <img src="{{ '/images/candidates/' + (candidat.user.profile?.photo ?? 'default.png') }}" alt="#" />
               </div>
               <div class="twm-mid-content">
 
                 <h4 class="twm-job-title">
-                  {{ candidat.user.profile.name }}
+                  {{ candidat.user.profile?.name ?? candidat.user.name }}
                 </h4>
 
                 <p>
-                  {{ candidat.user.profile.poste }}
+                  {{ candidat.user.profile?.poste ?? 'Poste non renseigné' }}
                 </p>
                 <p class="twm-candidate-address">
-                  <i class="feather-map-pin"></i>{{ candidat.user.profile.country + '/ ' + candidat.user.profile.city }}
+                  <i class="feather-map-pin"></i>{{ (candidat.user.profile?.country ?? '') + '/ ' + (candidat.user.profile?.city ?? '') }}
                 </p>
 
               </div>
             </div>
             <div class="twm-candi-self-bottom" style="display: flex; justify-content: center;">
-              <a href="tel:{{ candidat.user.profile.phone }}" class="site-button">Contactez {{ candidat.user.profile.name }}</a>
+              <a href="tel:{{ candidat.user.profile?.phone ?? '' }}" class="site-button">Contactez {{ candidat.user.profile?.name ?? candidat.user.name }}</a>
             </div>
           </div>
         </div>
@@ -59,7 +59,7 @@
                           <i class="fas fa-money-bill-wave"></i>
                           <span class="twm-title">Salaire voulu</span>
                           <div class="twm-s-info-discription">
-                            {{ candidat.user.profile.expectedSalary }}$/mois
+                            {{ candidat.user.profile?.expectedSalary ?? 0 }}$/mois
                           </div>
                         </div>
                       </div>
@@ -68,7 +68,7 @@
                           <i class="fas fa-clock"></i>
                           <span class="twm-title">Experience</span>
                           <div class="twm-s-info-discription">
-                            {{ candidat.user.profile.experience }}
+                            {{ candidat.user.profile?.experience ?? 'Non renseigné' }}
                           </div>
                         </div>
                       </div>
@@ -77,7 +77,7 @@
                           <i class="fas fa-venus-mars"></i>
                           <span class="twm-title">Genre</span>
                           <div class="twm-s-info-discription">
-                            {{ candidat.user.profile.sex }}
+                            {{ candidat.user.profile?.sex ?? 'Non renseigné' }}
                           </div>
                         </div>
                       </div>
@@ -86,7 +86,7 @@
                           <i class="fas fa-mobile-alt"></i>
                           <span class="twm-title">Téléphone</span>
                           <div class="twm-s-info-discription">
-                            {{ candidat.user.profile.phone }}
+                            {{ candidat.user.profile?.phone ?? 'Non renseigné' }}
                           </div>
                         </div>
                       </div>
@@ -95,7 +95,7 @@
                           <i class="fas fa-at"></i>
                           <span class="twm-title">Email</span>
                           <div class="twm-s-info-discription">
-                            {{ candidat.user.profile.email }}
+                            {{ candidat.user.profile?.email ?? 'Non renseigné' }}
                           </div>
                         </div>
                       </div>
@@ -104,7 +104,7 @@
                           <i class="fas fa-book-reader"></i>
                           <span class="twm-title">Qualification</span>
                           <div class="twm-s-info-discription">
-                            {{ candidat.user.profile.qualification }}
+                            {{ candidat.user.profile?.qualification ?? 'Non renseigné' }}
                           </div>
                         </div>
                       </div>
@@ -114,7 +114,7 @@
                           <i class="fas fa-map-marker-alt"></i>
                           <span class="twm-title">Address</span>
                           <div class="twm-s-info-discription">
-                            {{ candidat.user.profile.address }}
+                            {{ candidat.user.profile?.address ?? 'Non renseigné' }}
                           </div>
                         </div>
                       </div>
@@ -125,11 +125,11 @@
                 </div>
 
                 <h4 class="twm-s-title m-t0">
-                  À propos de {{ candidat.user.profile.name }}
+                  À propos de {{ candidat.user.profile?.name ?? candidat.user.name }}
                 </h4>
 
                 <p>
-                  {{ candidat.user.profile.description }}
+                  {{ candidat.user.profile?.description ?? 'Aucune description' }}
                 </p>
 
 
@@ -142,7 +142,7 @@
                   <ul class="description-list-2">
                     <li>
                       <i class="feather-check"></i>
-                      {{ candidat.user.profile.language }}
+                      {{ candidat.user.profile?.language ?? 'Non renseigné' }}
                     </li>
                   </ul>
 
@@ -259,15 +259,15 @@
                   Localisation
                 </h4>
                 <div class="twm-s-map-iframe twm-s-map-iframe-2">
-                  <p><span style="font-weight: bold;">Adresse : </span> {{ candidat.user.profile.address }}</p>
-                  <p><span style="font-weight: bold;">Ville : </span> {{ candidat.user.profile.city }}</p>
-                  <p><span style="font-weight: bold;">Pays : </span> {{ candidat.user.profile.country }}</p>
+                  <p><span style="font-weight: bold;">Adresse : </span> {{ candidat.user.profile?.address ?? 'Non renseigné' }}</p>
+                  <p><span style="font-weight: bold;">Ville : </span> {{ candidat.user.profile?.city ?? 'Non renseigné' }}</p>
+                  <p><span style="font-weight: bold;">Pays : </span> {{ candidat.user.profile?.country ?? 'Non renseigné' }}</p>
                 </div>
               </div>
 
-              <form class="twm-s-contact-wrap mb-5" action="mailto:{{ candidat.user.profile.email }}">
+              <form class="twm-s-contact-wrap mb-5" action="mailto:{{ candidat.user.profile?.email ?? '' }}">
                 <h4 class="section-head-small mb-4">
-                  Contactez {{ candidat.user.profile.name }}
+                  Contactez {{ candidat.user.profile?.name ?? candidat.user.name }}
                 </h4>
                 <div class="twm-s-contact twm-s-contact-2">
                   <div class="row">
